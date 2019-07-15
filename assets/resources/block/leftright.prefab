@@ -44,13 +44,8 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-<<<<<<< HEAD
       "x": 0,
       "y": 0
-=======
-      "x": 0.5,
-      "y": 0.5
->>>>>>> b6acf6cb6e47f9e082085c01ade94c1a71bf606d
     },
     "_position": {
       "__type__": "cc.Vec3",
@@ -128,15 +123,11 @@
     "speedx": 0,
     "originx": 0,
     "originy": 0,
-<<<<<<< HEAD
     "downspeed": 0,
     "first": true,
     "hat": null,
     "bed": null,
     "protection": null,
-=======
-    "hat": null,
->>>>>>> b6acf6cb6e47f9e082085c01ade94c1a71bf606d
     "_id": ""
   },
   {
