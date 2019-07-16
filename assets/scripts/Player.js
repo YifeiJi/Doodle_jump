@@ -9,276 +9,227 @@
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
-    properties: {
+  properties: {
 
-        jumpHeight: 0,
-        // 主角跳跃持续时间
-        jumpDuration: 0,
-        // 最大移动速度
-        maxMoveSpeed: 0,
-        speedx: 0,
-        speedy: 0,
-        timer: 0,
-        // 加速度
-        accelx: 0,
-        accely: 0,
-        hatdis: 0,
-        protected_time: 0,
-        accLeft: false,
-        accRight: false,
-        onhat: false,
-        right: true,
-        protected: false,
-        alive: true,
-        left: false,
-        pic: 'default',
-        path:null,
-        hatsound: null,
-        bubble: {
-            default: null,
-            type: cc.Node
-        },
-        jump_audio: {
-            default: null,
-            type: cc.AudioClip
-        },
-        drop_audio: {
-            default: null,
-            type: cc.AudioClip
-        },
-        hat_audio: {
-            default: null,
-            type: cc.AudioClip
-        }, bed_audio: {
-            default: null,
-            type: cc.AudioClip
-        }
+    jumpHeight: 0,
+    // 主角跳跃持续时间
+    jumpDuration: 0,
+    // 最大移动速度
+    maxMoveSpeed: 0,
+    speedx: 0,
+    speedy: 0,
+    timer: 0,
+    // 加速度
+    accelx: 0,
+    accely: 0,
+    hatdis: 0,
+    protected_time: 0,
+    accLeft: false,
+    accRight: false,
+    onhat: false,
+    right: true,
+    protected: false,
+    alive: true,
+    left: false,
+    pic: 'default',
+    path: null,
+    hatsound: null,
+    bubble: {
+      default: null,
+      type: cc.Node
     },
-
-
-    rotate: function () {
-        var rotation = cc.rotateBy(0.5, 360);
-        this.node.runAction(rotation);
+    jump_audio: {
+      default: null,
+      type: cc.AudioClip
     },
-
-    setSpeedy(value) {
-
-        this.speedy = value;
-
-
+    drop_audio: {
+      default: null,
+      type: cc.AudioClip
     },
-
-    play_jumpsound: function () {
-        cc.audioEngine.play(this.jump_audio, false, 1);
-        return;
+    hat_audio: {
+      default: null,
+      type: cc.AudioClip
     },
-    play_dropsound: function () {
-        cc.audioEngine.play(this.drop_audio, false, 1);
-        return;
-    },
-    play_hatsound: function () {
-        this.hatsound = cc.audioEngine.play(this.hat_audio, true, 0.5);
-        return;
-    },
-    play_bedsound: function () {
-        this.hatsound = cc.audioEngine.play(this.bed_audio, false, 0.5);
-        return;
-    },
+    bed_audio: {
+      default: null,
+      type: cc.AudioClip
+    }
+  },
 
-    onKeyDown(event) {
-        // set a flag when key pressed
-        switch (event.keyCode) {
-            case cc.macro.KEY.a:
-                this.accLeft = true;
-                break;
-            case cc.macro.KEY.d:
-                this.accRight = true;
-                break;
-        }
-    },
+  rotate: function () {
+    var rotation = cc.rotateBy(0.5, 360)
+    this.node.runAction(rotation)
+  },
 
-    onKeyUp(event) {
-        // unset a flag when key released
-        switch (event.keyCode) {
-            case cc.macro.KEY.a:
-                this.accLeft = false;
-                break;
-            case cc.macro.KEY.d:
-                this.accRight = false;
-                break;
-        }
-    },
+  setSpeedy (value) {
+    this.speedy = value
+  },
 
-    onMove(event) {
-        this.accelx = 10 * event.acc.x;
+  play_jumpsound: function () {
+    cc.audioEngine.play(this.jump_audio, false, 1)
+  },
+  play_dropsound: function () {
+    cc.audioEngine.play(this.drop_audio, false, 1)
+  },
+  play_hatsound: function () {
+    this.hatsound = cc.audioEngine.play(this.hat_audio, true, 0.5)
+  },
+  play_bedsound: function () {
+    this.hatsound = cc.audioEngine.play(this.bed_audio, false, 0.5)
+  },
 
-    },
+  onKeyDown (event) {
+    // set a flag when key pressed
+    switch (event.keyCode) {
+      case cc.macro.KEY.a:
+        this.accLeft = true
+        break
+      case cc.macro.KEY.d:
+        this.accRight = true
+        break
+    }
+  },
 
+  onKeyUp (event) {
+    // unset a flag when key released
+    switch (event.keyCode) {
+      case cc.macro.KEY.a:
+        this.accLeft = false
+        break
+      case cc.macro.KEY.d:
+        this.accRight = false
+        break
+    }
+  },
 
+  onMove (event) {
+    this.accelx = 10 * event.acc.x
+  },
 
-    // LIFE-CYCLE CALLBACKS:
+  // LIFE-CYCLE CALLBACKS:
 
-    onLoad() {
-        //this.jumpAction = this.setJumpAction();
+  onLoad () {
+    // this.jumpAction = this.setJumpAction();
 
-        //this.MoveAction=this.setMoveAction();
-        //this.node.runAction(this.jumpAction);
+    // this.MoveAction=this.setMoveAction();
+    // this.node.runAction(this.jumpAction);
 
-        var b = cc.director.getWinSizeInPixels()
-        this.maxwidth = b.width
-        this.maxheight = b.height
-        this.accLeft = false;
-        this.accRight = false;
-        this.accelx = 0;
-        this.speedy_2 = 0;
-        this.acc_2 = 1;
-        this.accely = -600;
-        this.hatdis = 0;
-        this.right = true;
-        this.left = false;
-        this.alive = true;
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+    var b = cc.director.getWinSizeInPixels()
+    this.maxwidth = b.width
+    this.maxheight = b.height
+    this.accLeft = false
+    this.accRight = false
+    this.accelx = 0
+    this.speedy_2 = 0
+    this.acc_2 = 1
+    this.accely = -600
+    this.hatdis = 0
+    this.right = true
+    this.left = false
+    this.alive = true
+    cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this)
+    cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this)
 
-        cc.systemEvent.setAccelerometerEnabled(true);
-        cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onMove, this);
-        //this.pic='default';
-        console.log(this.pic)
+    cc.systemEvent.setAccelerometerEnabled(true)
+    cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onMove, this)
+    // this.pic='default';
+    console.log(this.pic)
+  },
 
-    },
+  start () {
+    this.timer = 0
+  },
 
-    start() {
-        this.timer = 0;
-
-    },
-
-
-
-
-
-    update(dt) {
-        this.path='./player/'+this.pic;
-        this.timer += 1;
-        if (this.onhat === false) this.speedy = this.speedy + this.accely * dt;
-        this.speedy_2 = this.speedy_2 + this.acc_2 * dt;
-        if (this.speedy_2 > 0) this.speedy_2 = 0;
-        this.speedx = this.accelx * 80;//60;
-/*
+  update (dt) {
+    this.path = './player/' + this.pic
+    this.timer += 1
+    if (this.onhat === false) this.speedy = this.speedy + this.accely * dt
+    this.speedy_2 = this.speedy_2 + this.acc_2 * dt
+    if (this.speedy_2 > 0) this.speedy_2 = 0
+    this.speedx = this.accelx * 80// 60;
+    /*
         this.speedx = 0;
         if (this.accLeft) { this.speedx = -80; }
 
         if (this.accRight) { this.speedx = 80; }
 
-
 */
-        var self = this;
+    var self = this
 
-
-
-
-
-        if ((this.left === true) && (this.onhat === false)) {
-            cc.loader.loadRes(this.path+"/origin_left", cc.SpriteFrame, function (err, spriteFrame) {
-                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            });
+    if ((this.left === true) && (this.onhat === false)) {
+      cc.loader.loadRes(this.path + '/origin_left', cc.SpriteFrame, function (err, spriteFrame) {
+        self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+      })
+    } else if ((this.right === true) && (this.onhat === false)) {
+      cc.loader.loadRes(this.path + '/origin_right', cc.SpriteFrame, function (err, spriteFrame) {
+        self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+      })
+    } else if ((this.right === true) && (this.onhat === true)) {
+      if (this.timer % 2 === 0) {
+        cc.loader.loadRes(this.path + '/hat_right', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      } else {
+        cc.loader.loadRes(this.path + '/hat_right_2', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
         }
-        else if ((this.right === true) && (this.onhat === false)) {
-            cc.loader.loadRes(this.path+"/origin_right", cc.SpriteFrame, function (err, spriteFrame) {
-                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        )
+      }
+    } else if ((this.left === true) && (this.onhat === true)) {
+      if (this.timer % 2 === 0) {
+        cc.loader.loadRes(this.path + '/hat_left', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      } else {
+        cc.loader.loadRes(this.path + '/hat_left_2', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      }
+    }
 
-            });
+    var newx = this.node.x + this.speedx * dt
+    if (newx < -this.game.maxX) newx = newx + 2 * this.game.maxX
+    if (newx > this.game.maxX) newx = newx - 2 * this.game.maxX
+    this.node.x = newx
+    if (this.alive === false) {
+      cc.audioEngine.stop(this.hatsound)
+    }
+    if (this.onhat === true) {
+      this.hatdis += this.speedy * dt
+      if (this.hatdis > 3 * this.game.maxY) {
+        this.onhat = false; this.hatdis = 0
+        cc.audioEngine.stop(this.hatsound)
+
+        if (this.left === true) {
+          cc.loader.loadRes(this.path + '/origin_left', cc.SpriteFrame, function (err, spriteFrame) {
+            self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+          })
+        } else if (this.right === true) {
+          cc.loader.loadRes(this.path + '/origin_right', cc.SpriteFrame, function (err, spriteFrame) {
+            self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+          })
         }
-        else if ((this.right === true) && (this.onhat === true)) {
-            if (this.timer % 2 === 0) {
-                cc.loader.loadRes(this.path+"/hat_right", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+      }
+    }
 
-                });
-            }
-            else {
-                cc.loader.loadRes(this.path+"/hat_right_2", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                }
-                );
-            }
+    this.node.y = this.speedy * dt + this.node.y + this.game.getComponent('Game').speed * dt
+    if (this.speedx < 0) { this.right = false; this.left = true }
+    if (this.speedx > 0) { this.right = true; this.left = false }
+    if (this.node.y < -this.game.maxY) this.alive = false
+    if (this.protected === true) {
+    // this.bubble.active=true;
 
-        }
-        else if ((this.left === true) && (this.onhat === true)) {
-            if (this.timer % 2 === 0) {
-                cc.loader.loadRes(this.path+"/hat_left", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+      this.bubble.x = this.node.x// -this.node.width/4;
+      this.bubble.y = this.node.y
+      this.protected_time += dt
+    }
 
-                });
-            }
-            else {
-                cc.loader.loadRes(this.path+"/hat_left_2", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-
-                });
-            }
-        }
-    
-
-
-
-
-
-        var newx = this.node.x + this.speedx * dt;
-        if (newx < -this.game.maxX) newx = newx + 2 * this.game.maxX;
-        if (newx > this.game.maxX) newx = newx - 2 * this.game.maxX
-        this.node.x = newx;
-        if (this.alive === false) {
-            cc.audioEngine.stop(this.hatsound);
-        }
-        if (this.onhat === true) {
-            this.hatdis += this.speedy * dt;
-            if (this.hatdis > 3 * this.game.maxY) {
-
-                this.onhat = false; this.hatdis = 0;
-                cc.audioEngine.stop(this.hatsound);
-
-                
-                    if (this.left === true) {
-                        cc.loader.loadRes(this.path+"/origin_left", cc.SpriteFrame, function (err, spriteFrame) {
-                            self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                        });
-
-                    }
-                    else if (this.right === true) {
-                        cc.loader.loadRes(this.path+"/origin_right", cc.SpriteFrame, function (err, spriteFrame) {
-                            self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-
-                        });
-                    }
-
-
-            }
-
-
-            
-        
-
-        } 
-
-            
-         this.node.y = this.speedy * dt + this.node.y + this.game.getComponent('Game').speed * dt;
-    if(this.speedx < 0) { this.right = false; this.left = true; }
-if (this.speedx > 0) { this.right = true; this.left = false; }
-if (this.node.y < -this.game.maxY) this.alive = false;
-if (this.protected === true) {
-    //this.bubble.active=true;
-
-    this.bubble.x = this.node.x;//-this.node.width/4;
-    this.bubble.y = this.node.y;
-    this.protected_time += dt;
-}
-
-if (this.protected_time > 10) {
-    this.protected = false; this.protected_time = 0;
-    this.bubble.x = -2 * this.game.getComponent('Game').maxX;
-    this.bubble.y = -2 * this.game.getComponent('Game').maxY;
-}
-     }
-});
+    if (this.protected_time > 10) {
+      this.protected = false; this.protected_time = 0
+      this.bubble.x = -2 * this.game.getComponent('Game').maxX
+      this.bubble.y = -2 * this.game.getComponent('Game').maxY
+    }
+  }
+})

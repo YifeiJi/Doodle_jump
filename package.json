@@ -1,0 +1,30 @@
+{
+  "name": "doodle_jump",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YifeiJi/Doodle_jump.git"
+  },
+  "contributors": [
+    "Niu Haoyu", 
+    "Ji Yifei"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YifeiJi/Doodle_jump/issues"
+  },
+  "homepage": "https://github.com/YifeiJi/Doodle_jump#readme",
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}

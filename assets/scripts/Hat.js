@@ -9,43 +9,43 @@
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
-    properties: {
-        type:'default'
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
-    },
+  properties: {
+    type: 'default'
+    // foo: {
+    //     // ATTRIBUTES:
+    //     default: null,        // The default value will be used only when the component attaching
+    //                           // to a node for the first time
+    //     type: cc.SpriteFrame, // optional, default is typeof default
+    //     serializable: true,   // optional, default is true
+    // },
+    // bar: {
+    //     get () {
+    //         return this._bar;
+    //     },
+    //     set (value) {
+    //         this._bar = value;
+    //     }
+    // },
+  },
 
-    // LIFE-CYCLE CALLBACKS:
+  // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+  // onLoad () {},
 
-    start () {
+  start () {
 
-    },
+  },
 
-    update (dt) {
+  update (dt) {
 
-       // if (-this.game.getComponent('Game').maxY> this.node.y+this.node.height) {
-            // 调用收集行为
-            //if (this.originy>this.game.getComponent('Game').line) 
-            //this.game.getComponent('Game').line=this.originy;
-            //this.node.destroy();
-            //return;
-        //}
-    },
-});
+    // if (-this.game.getComponent('Game').maxY> this.node.y+this.node.height) {
+    // 调用收集行为
+    // if (this.originy>this.game.getComponent('Game').line)
+    // this.game.getComponent('Game').line=this.originy;
+    // this.node.destroy();
+    // return;
+    // }
+  }
+})
