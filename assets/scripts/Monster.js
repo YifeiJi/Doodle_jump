@@ -49,11 +49,11 @@ cc.Class({
         // if (((player.y-this.node.y-this.node.height<=this.Radius)&&(this.node.y-player.y-player.height<=this.Radius))&&
 
         //(player.x+player.width>=this.node.x+this.Radius)&&(player.x<=this.node.x+this.node.width-this.Radius))
-        if ((Math.abs( this.node.y- 0.5 * player.height-player.y )<= this.Radius)
+        if ((Math.abs(this.node.y - 0.5 * player.height - player.y) <= this.Radius)
 
-            && (player.x + 0.5 * player.width >= this.node.x+this.margin ) && (player.x - 0.5 * player.width <= this.node.x + this.node.width-this.margin))
-           
-           if (player.getComponent('Player').speedy>=0) return true;
+            && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
+
+            if (player.getComponent('Player').speedy >= 0) return true;
         return false;
 
     },
@@ -112,11 +112,14 @@ cc.Class({
         if ((this.touched_bottom()) && (this.game.player.getComponent('Player').protected === false)) {
             this.game.player.getComponent('Player').setSpeedy(this.setspeed);
             this.game.player.getComponent('Player').alive = false;
+            cc.audioEngine.stop(this.game.player.getComponent('Player').rocketsound);
+            cc.audioEngine.stop(this.game.player.getComponent('Player').hatsound);
             this.game.player.getComponent('Player').play_dropsound();
+
         }
         if ((this.touched_top())&&(this.game.player.getComponent('Player').alive===true)) {
             this.game.player.getComponent('Player').setSpeedy(this.setspeed_2);
-            this.game.player.getComponent('Player').jump_dropsound();
+            this.game.player.getComponent('Player').play_jumpsound();
         }
 
         this.timer += 1;
@@ -167,9 +170,10 @@ cc.Class({
 
 
 
-        this.speedy = this.speedy + this.acc * dt;
-        if (this.speedy > 0) this.speedy = 0;
+        if (-this.game.getComponent('Game').maxY> this.node.y+this.node.height) 
+            this.node.destroy();
 
-        if (this.game.player.getComponent('Player').alive === true) this.node.y = this.speedy * dt + this.node.y + this.game.getComponent('Game').speed * dt;
+        //if (this.game.player.getComponent('Player').alive === true) 
+        this.node.y =  this.node.y + this.game.getComponent('Game').speed * dt;
     }
 });

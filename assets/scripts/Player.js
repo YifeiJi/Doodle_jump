@@ -25,17 +25,22 @@ cc.Class({
         accelx: 0,
         accely: 0,
         hatdis: 0,
+        rocketdis: 0,
         protected_time: 0,
         accLeft: false,
         accRight: false,
         onhat: false,
+        onrocket: false,
         right: true,
         protected: false,
         alive: true,
+        fall:false,
+        restart:0,
         left: false,
         pic: 'default',
-        path:null,
+        path: null,
         hatsound: null,
+        rocketsound: null,
         bubble: {
             default: null,
             type: cc.Node
@@ -51,7 +56,12 @@ cc.Class({
         hat_audio: {
             default: null,
             type: cc.AudioClip
-        }, bed_audio: {
+        }, 
+        rocket_audio: {
+            default: null,
+            type: cc.AudioClip
+        }, 
+        bed_audio: {
             default: null,
             type: cc.AudioClip
         }
@@ -84,6 +94,10 @@ cc.Class({
     },
     play_bedsound: function () {
         this.hatsound = cc.audioEngine.play(this.bed_audio, false, 0.5);
+        return;
+    },
+    play_rocketsound: function () {
+        this.rocketsound = cc.audioEngine.play(this.rocket_audio, true, 0.5);
         return;
     },
 
@@ -151,6 +165,7 @@ cc.Class({
 
     start() {
         this.timer = 0;
+        window.die=false;
 
     },
 
@@ -159,46 +174,80 @@ cc.Class({
 
 
     update(dt) {
-        this.path='./player/'+this.pic;
+        if ((this.node.y+this.node.height/2<-this.game.getComponent('Game').maxY)&&(this.fall===false))
+        {
+           this.fall=true;
+           //this.node.y=this.node.y+2*this.game.getComponent('Game').maxY;
+           this.game.getComponent('Game').speed=this.game.getComponent('Game').maxY*2;
+           this.speedy=this.game.getComponent('Game').maxY;
+            
+        }
+        if (this.fall===true)
+        {
+            this.speedy=this.speedy-this.game.getComponent('Game').maxY*dt;
+            this.node.y=this.node.y+this.speedy*dt;
+
+            if ((Math.abs(this.speedy)<=10)&&(this.restart>=1))
+            {
+                this.game.getComponent('Game').speed=0;
+                this.protected=true;
+                this.onrocket=true;
+                this.play_rocketsound();
+                this.restart=this.restart-1;
+                this.speedy=700;
+                this.fall=false;
+                this.alive=true;
+            }
+
+            if ((Math.abs(this.speedy)<=10)&&(this.restart==0))
+            {
+
+            }
+            return;
+        }
+       
+
+
+        this.path = './player/' + this.pic;
         this.timer += 1;
-        if (this.onhat === false) this.speedy = this.speedy + this.accely * dt;
+        if ((this.onhat === false) && (this.onrocket === false)) this.speedy = this.speedy + this.accely * dt;
         this.speedy_2 = this.speedy_2 + this.acc_2 * dt;
         if (this.speedy_2 > 0) this.speedy_2 = 0;
         this.speedx = this.accelx * 80;//60;
-/*
+
         this.speedx = 0;
         if (this.accLeft) { this.speedx = -80; }
 
         if (this.accRight) { this.speedx = 80; }
 
 
-*/
+
         var self = this;
 
 
 
 
 
-        if ((this.left === true) && (this.onhat === false)) {
-            cc.loader.loadRes(this.path+"/origin_left", cc.SpriteFrame, function (err, spriteFrame) {
+        if ((this.left === true) && (this.onhat === false) && (this.onrocket === false)) {
+            cc.loader.loadRes(this.path + "/origin_left", cc.SpriteFrame, function (err, spriteFrame) {
                 self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             });
         }
-        else if ((this.right === true) && (this.onhat === false)) {
-            cc.loader.loadRes(this.path+"/origin_right", cc.SpriteFrame, function (err, spriteFrame) {
+        else if ((this.right === true) && (this.onhat === false) && (this.onrocket === false)) {
+            cc.loader.loadRes(this.path + "/origin_right", cc.SpriteFrame, function (err, spriteFrame) {
                 self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
 
             });
         }
         else if ((this.right === true) && (this.onhat === true)) {
             if (this.timer % 2 === 0) {
-                cc.loader.loadRes(this.path+"/hat_right", cc.SpriteFrame, function (err, spriteFrame) {
+                cc.loader.loadRes(this.path + "/hat_right", cc.SpriteFrame, function (err, spriteFrame) {
                     self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
 
                 });
             }
             else {
-                cc.loader.loadRes(this.path+"/hat_right_2", cc.SpriteFrame, function (err, spriteFrame) {
+                cc.loader.loadRes(this.path + "/hat_right_2", cc.SpriteFrame, function (err, spriteFrame) {
                     self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
                 }
                 );
@@ -207,19 +256,36 @@ cc.Class({
         }
         else if ((this.left === true) && (this.onhat === true)) {
             if (this.timer % 2 === 0) {
-                cc.loader.loadRes(this.path+"/hat_left", cc.SpriteFrame, function (err, spriteFrame) {
+                cc.loader.loadRes(this.path + "/hat_left", cc.SpriteFrame, function (err, spriteFrame) {
                     self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
 
                 });
             }
             else {
-                cc.loader.loadRes(this.path+"/hat_left_2", cc.SpriteFrame, function (err, spriteFrame) {
+                cc.loader.loadRes(this.path + "/hat_left_2", cc.SpriteFrame, function (err, spriteFrame) {
                     self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
 
                 });
             }
         }
-    
+
+        else if ((this.right === true) && (this.onrocket === true)) {
+
+            cc.loader.loadRes(this.path + "/rocket_right", cc.SpriteFrame, function (err, spriteFrame) {
+                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+
+            });
+
+
+        }
+        else if ((this.left === true) && (this.onrocket === true)) {
+
+            cc.loader.loadRes(this.path + "/rocket_left", cc.SpriteFrame, function (err, spriteFrame) {
+                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+
+            });
+
+        }
 
 
 
@@ -232,6 +298,7 @@ cc.Class({
         if (this.alive === false) {
             cc.audioEngine.stop(this.hatsound);
         }
+
         if (this.onhat === true) {
             this.hatdis += this.speedy * dt;
             if (this.hatdis > 3 * this.game.maxY) {
@@ -239,46 +306,72 @@ cc.Class({
                 this.onhat = false; this.hatdis = 0;
                 cc.audioEngine.stop(this.hatsound);
 
-                
+
+                if (this.left === true) {
+                    cc.loader.loadRes(this.path + "/origin_left", cc.SpriteFrame, function (err, spriteFrame) {
+                        self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+                    });
+
+                }
+                else if (this.right === true) {
+                    cc.loader.loadRes(this.path + "/origin_right", cc.SpriteFrame, function (err, spriteFrame) {
+                        self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+
+                    });
+                }
+
+
+            }
+
+        }
+
+            if (this.onrocket === true) {
+                this.rocketdis += this.speedy * dt;
+                if (this.rocketdis > 6 * this.game.maxY) {
+
+                    this.onrocket = false; this.rocketdis = 0;
+                    cc.audioEngine.stop(this.rocketsound);
+
+
                     if (this.left === true) {
-                        cc.loader.loadRes(this.path+"/origin_left", cc.SpriteFrame, function (err, spriteFrame) {
+                        cc.loader.loadRes(this.path + "/origin_left", cc.SpriteFrame, function (err, spriteFrame) {
                             self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
                         });
 
                     }
                     else if (this.right === true) {
-                        cc.loader.loadRes(this.path+"/origin_right", cc.SpriteFrame, function (err, spriteFrame) {
+                        cc.loader.loadRes(this.path + "/origin_right", cc.SpriteFrame, function (err, spriteFrame) {
                             self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
 
                         });
                     }
 
 
+                }
+
+
+
+
+
             }
 
 
-            
-        
+            this.node.y = this.speedy * dt + this.node.y + this.game.getComponent('Game').speed * dt;
+            if (this.speedx < 0) { this.right = false; this.left = true; }
+            if (this.speedx > 0) { this.right = true; this.left = false; }
+            if (this.node.y < -this.game.maxY) this.alive = false;
+            if (this.protected === true) {
+                //this.bubble.active=true;
 
-        } 
+                this.bubble.x = this.node.x;//-this.node.width/4;
+                this.bubble.y = this.node.y;
+                this.protected_time += dt;
+            }
 
-            
-         this.node.y = this.speedy * dt + this.node.y + this.game.getComponent('Game').speed * dt;
-    if(this.speedx < 0) { this.right = false; this.left = true; }
-if (this.speedx > 0) { this.right = true; this.left = false; }
-if (this.node.y < -this.game.maxY) this.alive = false;
-if (this.protected === true) {
-    //this.bubble.active=true;
-
-    this.bubble.x = this.node.x;//-this.node.width/4;
-    this.bubble.y = this.node.y;
-    this.protected_time += dt;
-}
-
-if (this.protected_time > 10) {
-    this.protected = false; this.protected_time = 0;
-    this.bubble.x = -2 * this.game.getComponent('Game').maxX;
-    this.bubble.y = -2 * this.game.getComponent('Game').maxY;
-}
-     }
-});
+            if (this.protected_time > 10) {
+                this.protected = false; this.protected_time = 0;
+                this.bubble.x = -2 * this.game.getComponent('Game').maxX;
+                this.bubble.y = -2 * this.game.getComponent('Game').maxY;
+            }
+        }
+    });

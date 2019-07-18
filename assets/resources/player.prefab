@@ -90,15 +90,20 @@
     "accelx": 0,
     "accely": -10,
     "hatdis": 0,
+    "rocketdis": 0,
     "protected_time": 0,
     "accLeft": false,
     "accRight": false,
     "onhat": false,
+    "onrocket": false,
     "right": true,
     "protected": false,
     "alive": true,
     "left": false,
+    "pic": "default",
+    "path": null,
     "hatsound": null,
+    "rocketsound": null,
     "bubble": null,
     "jump_audio": {
       "__uuid__": "431bc6e6-a54f-4d09-91a0-a9a9d51eeeb5"
@@ -107,7 +112,10 @@
       "__uuid__": "4fdcb779-361c-441d-9f5c-4e4d374f095a"
     },
     "hat_audio": {
-      "__uuid__": "eab78cb9-32e7-4467-9aca-db45faed6cba"
+      "__uuid__": "e566f07b-74fc-44c6-9748-94a2ef65def4"
+    },
+    "rocket_audio": {
+      "__uuid__": "db9bc927-d9a5-4dde-abe6-d09554324960"
     },
     "bed_audio": {
       "__uuid__": "6d4eefa9-fa2f-4973-97dc-0a42d7e3e211"

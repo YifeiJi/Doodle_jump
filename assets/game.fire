@@ -44,8 +44,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.524812030075188,
-      "y": 0.524812030075188,
+      "x": 0.5921875,
+      "y": 0.5921875,
       "z": 1
     },
     "_quat": {
@@ -1177,6 +1177,9 @@
     },
     "hatfab": {
       "__uuid__": "6bbf1abb-4f5d-4ccc-b35e-7c0f1b45053d"
+    },
+    "rocketfab": {
+      "__uuid__": "585905cb-da7b-48f2-94bc-94b5dc8df0c2"
     },
     "underwaterhatfab": {
       "__uuid__": "347377a2-b172-4e0a-8264-f4dcf7ff5cca"

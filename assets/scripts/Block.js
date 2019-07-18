@@ -118,6 +118,19 @@ touched_hat:function() {
     return false;
 
 },
+touched_rocket:function() {
+
+    if (this.rocket===null) return false;
+    var player=this.game.player;
+    if (player.getComponent('Player').alive===false) return false;
+    if (((player.y-this.node.y-this.node.height-this.rocket.height-0.5*player.height<=0)&&(this.node.y-player.y-0.5*player.height<=0))
+    &&(player.x+0.5*player.width>=this.node.x+this.margin)&&(player.x-0.5*player.width<=this.node.x+this.node.width-this.margin))
+   return true;
+
+    return false;
+
+},
+
 touched_bed:function() {
 
     if (this.bed===null) return false;
@@ -148,6 +161,8 @@ touched_bed:function() {
             this.hat.destroy();
             if (this.type==='bed')
             this.bed.destroy();
+            if (this.type==='rocket')
+            this.rocket.destroy();
             if (this.type==='protection')
             this.protection.destroy();
             return;
@@ -168,7 +183,31 @@ touched_bed:function() {
             this.game.player.getComponent('Player').hatdis=0;
             this.hat.destroy();
             this.type='basic';
+            this.game.player.getComponent('Player').onrocket=false;
+            cc.audioEngine.stop(this.game.player.getComponent('Player').rocketsound);
+            
+            return;
+        }
+       
+        }
+        if (this.type==='rocket')
+        {
+        if (this.touched_rocket())
+        { 
+            this.game.player.getComponent('Player').setSpeedy(this.setspeed*2);
+            if (this.game.player.getComponent('Player').onrocket===false)  
+            {
+                //this.game.player.getComponent('Player').play_jumpsound();
+                this.game.player.getComponent('Player').play_rocketsound();
+            }
 
+            this.game.player.getComponent('Player').onrocket=true;
+            this.game.player.getComponent('Player').rocketdis=0;
+            this.rocket.destroy();
+            this.type='basic';
+            this.game.player.getComponent('Player').onbed=false;
+            cc.audioEngine.stop(this.game.player.getComponent('Player').hatsound);
+            
             return;
         }
        
@@ -176,11 +215,13 @@ touched_bed:function() {
 
 
 
+
+
         if (this.type==='protection')
         {
         if (this.touched_protection())
         { 
-            if (this.game.player.getComponent('Player').onhat===false)
+            if ((this.game.player.getComponent('Player').onhat===false)&&(this.game.player.getComponent('Player').onrocket===false))
             {
             this.game.player.getComponent('Player').setSpeedy(this.setspeed);
             this.game.player.getComponent('Player').play_jumpsound();
@@ -189,7 +230,7 @@ touched_bed:function() {
             this.game.player.getComponent('Player').protected_time =0;
             this.protection.destroy();
             this.type='basic';
-
+            this.game.player.getComponent('Player').protected_time=0;
             return;
         }
        
@@ -201,8 +242,8 @@ touched_bed:function() {
             this.game.player.getComponent('Player').rotate();
             this.game.player.getComponent('Player').setSpeedy(this.setspeed_bed);
             this.game.player.getComponent('Player').play_bedsound();
-            this.game.player.getComponent('Player').protected_time=0;
             
+           
         }
 
         if (this.touched()&&((this.type==='basic')||(this.type==='leftright'))) {
@@ -217,8 +258,9 @@ touched_bed:function() {
         }
 
 
-        this.speedy=this.speedy+this.acc*dt;
-        if (this.speedy>0) this.speedy=0;
+        //this.speedy=this.speedy+this.acc*dt;
+        //if (this.speedy>0) this.speedy=0;
+        this.speedy=0;
         this.node.y=this.node.y+this.speedy*dt+this.game.getComponent('Game').speed*dt;
 
         if (this.type==='leftright')
@@ -232,13 +274,17 @@ touched_bed:function() {
         {
             this.hat.y=this.hat.y+this.speedy*dt+this.game.getComponent('Game').speed*dt;
         }
+        if (this.type==='rocket')
+        {
+            this.rocket.y=this.rocket.y+this.speedy*dt+this.game.getComponent('Game').speed*dt;
+        }
         if (this.type==='protection')
         {
             this.protection.y=this.protection.y+this.speedy*dt+this.game.getComponent('Game').speed*dt;
         }
         if (this.type==='bed')
         {
-            this.bed.y=this.bed.y+this.game.getComponent('Game').speed*dt;
+            this.bed.y=this.bed.y+this.speedy*dt+this.game.getComponent('Game').speed*dt;
         }
         
     }
