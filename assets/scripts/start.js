@@ -27,37 +27,37 @@ cc.Class({
     //         this._bar = value;
     //     }
     // },
-    type: 'default'
+    bg: {
+      default: null,
+      type: cc.Node
+    },
+
+    playButton: {
+      default: null,
+      type: cc.Node
+    },
+
+    scoreButton: {
+      default: null,
+      type: cc.Node
+    }
   },
 
   // LIFE-CYCLE CALLBACKS:
 
-  // onLoad () {},
+  onLoad: function () {
+    this.bg.setContentSize(this.node.width, this.node.height)
+    this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      cc.director.loadScene('game')
+    })
+    this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      cc.director.loadScene('highScores')
+    })
+  },
 
   start () {
 
-
-
   },
 
-  show () {
-    var self = this
-        if ((this.type === 'default') || (this.type === 'winter')) {
-      cc.loader.loadRes('./block/bed', cc.SpriteFrame, function (err, spriteFrame) {
-        self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-
-            })
-        } else if (this.type === 'jungle') {
-      cc.loader.loadRes('./block/junglebed', cc.SpriteFrame, function (err, spriteFrame) {
-        self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-
-            })
-        } else if (this.type === 'underwater') {
-      cc.loader.loadRes('./block/underwaterbed', cc.SpriteFrame, function (err, spriteFrame) {
-        self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-
-            })
-        }
-  }
-  // update (dt) {},
+  update (dt) {}
 })

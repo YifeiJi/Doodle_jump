@@ -167,8 +167,48 @@ cc.Class({
             }
         }
 
+    if ((this.touched_bottom()) && (this.game.player.getComponent('Player').protected === false)) {
+      this.game.player.getComponent('Player').setSpeedy(this.setspeed)
+      this.game.player.getComponent('Player').alive = false
+      this.game.player.getComponent('Player').play_dropsound()
+    }
+    if ((this.touched_top()) && (this.game.player.getComponent('Player').alive === true)) {
+      this.game.player.getComponent('Player').setSpeedy(this.setspeed_2)
+      this.game.player.getComponent('Player').jump_dropsound()
+    }
 
+    this.timer += 1
+    if (this.type === 'move') {
+      if (this.timer % 3 === 0) {
+        cc.loader.loadRes('monster_00', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      } else if (this.timer % 3 === 1) {
+        cc.loader.loadRes('monster_01', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      } else if (this.timer % 3 === 2) {
+        cc.loader.loadRes('monster_02', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      }
+    }
 
+    if (this.type !== 'move') {
+      if (this.timer % 3 === 0) {
+        cc.loader.loadRes('monster_01', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      } else if (this.timer % 3 === 1) {
+        cc.loader.loadRes('monster_00', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      } else if (this.timer % 3 === 2) {
+        cc.loader.loadRes('monster_01', cc.SpriteFrame, function (err, spriteFrame) {
+          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
+        })
+      }
+    }
 
         if (-this.game.getComponent('Game').maxY> this.node.y+this.node.height) 
             this.node.destroy();

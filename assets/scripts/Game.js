@@ -1,5 +1,5 @@
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
     properties: {
 
@@ -411,7 +411,7 @@ cc.Class({
  
         //this.node.y=this.node.y-100;
         var speed=this.player.getComponent('Player').speedy;
-    
+
         return;
         },
 */
@@ -424,7 +424,7 @@ cc.Class({
         if (this.player.y > 0)
             this.speed = -((this.player.y+this.maxY) / (this.maxY * 1.5)) * this.player.getComponent('Player').speedy;
         if (this.player.getComponent('Player').onhat === true) this.speed = -(this.player.y);
-       
+        if (this.player.getComponent('Player').onrocket === true) this.speed = -(4*this.player.y);
         if (this.speed > 0) this.speed = 0;
     }
         //this.speed=0
