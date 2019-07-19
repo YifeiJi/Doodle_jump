@@ -40,11 +40,17 @@ cc.Class({
     scoreButton: {
       default: null,
       type: cc.Node
-    }
+    },
+
+    maxScore: 0,
+    finalScore: 0,
+    shouldUpdateScore: false
+
   },
 
   // LIFE-CYCLE CALLBACKS:
 
+  // todo 采用preload进行优化
   onLoad: function () {
     this.bg.setContentSize(this.node.width, this.node.height)
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
@@ -53,11 +59,25 @@ cc.Class({
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('highScores')
     })
+    window.player_type = 'jungle'
+    // cc.game.addPersistRootNode(this.node)
   },
 
   start () {
 
   },
 
-  update (dt) {}
+  update (dt) {
+    if (this.shouldUpdateScore) {
+      if (this.maxScore < this.finalScore) {
+        // 构建发布时指定开放数据域
+        window.wx.postMessage({
+          command: 'upload', // 上传分数
+          score: this.finalScore
+        })
+        this.maxScore = this.finalScore
+      }
+      this.shouldUpdateScore = false
+    }
+  }
 })
