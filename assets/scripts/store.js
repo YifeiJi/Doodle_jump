@@ -15,30 +15,41 @@ cc.Class({
     homeButton: {
       default: null,
       type: cc.Node
-    }
+    },
+
+    background: {
+      default: null,
+      type: cc.Node
+    },
+
+    moneyText: {
+      default: null,
+      type: cc.Label
+    },
+
+    rocketNumber: 0,
+    hatNumber: 0,
+    reviveNumber: 5
   },
 
   // LIFE-CYCLE CALLBACKS:
 
   onLoad () {
+    /*
+     * todo: 开局可购买如下道具
+     * 竹蜻蜓、喷漆火箭、复活道具
+     */
     this.homeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('start')
     })
   },
 
   start () {
-    /*
-    window.wx.postMessage({
-      command: 'open' // 绘制分数排行榜
-    })
-    const openDataContext = window.wx.getOpenDataContext()
-    const sharedCanvas = openDataContext.canvas
+    this.moneyText.string = `money: ${window.money}`
+  },
 
-    const canvas = window.nwx.createCanvas()
-    const context = canvas.getContext('2d')
-    context.drawImage(sharedCanvas, 0, 0)
-     */
+  update (dt) {
+    // todo: 改为仅在开始时和购买后更新金钱数量，降低计算负担
+    this.moneyText.string = `money: ${window.money}`
   }
-
-  // update (dt) {},
 })

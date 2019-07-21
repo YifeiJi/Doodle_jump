@@ -61,7 +61,9 @@ cc.Class({
   // LIFE-CYCLE CALLBACKS:
 
   onLoad: function () {
-    this.bg.setContentSize(this.node.width, this.node.height)
+    // this.bg.setContentSize(this.node.width, this.node.height)
+    window.player_type = 'winter' // 游戏地图初始化
+    window.money = 10000 // 金钱初始化
 
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('game')
@@ -73,8 +75,6 @@ cc.Class({
       event.stopPropagation()
     }, this.scoreButton)
     // cc.game.addPersistRootNode(this.node)
-
-    window.player_type = 'winter' // 游戏地图初始化
 
     this.modeChoose.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
       this.opacity = 200 // 反馈效果：拖动物体时变透明
@@ -92,7 +92,7 @@ cc.Class({
       if (pos <= -350) {
         window.player_type = 'jungle'
       } else if (pos >= 290) {
-        window.player_type = 'underwater'
+        window.player_type = 'underwater' // todo: 试玩发现死亡后没有终止界面
       } else {
         window.player_type = 'winter'
       }
@@ -101,11 +101,8 @@ cc.Class({
     }, this.modeChoose)
 
     this.storeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      /*
-       * todo: 开局可购买如下道具
-       * 竹蜻蜓、喷漆火箭、复活道具
-       */
-    })
+      cc.director.loadScene('store')
+    }, this.storeButton)
   },
 
   start () {

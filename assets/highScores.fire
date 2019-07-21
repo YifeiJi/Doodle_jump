@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.4123667743050428,
-      "y": 0.4123667743050428,
+      "x": 0.29295654296875,
+      "y": 0.29295654296875,
       "z": 1
     },
     "_quat": {
@@ -89,7 +89,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 720,
+      "width": 640,
       "height": 1280
     },
     "_anchorPoint": {
@@ -99,7 +99,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 360,
+      "x": 320,
       "y": 640,
       "z": 0
     },
@@ -297,7 +297,7 @@
       }
     ],
     "_prefab": null,
-    "_opacity": 200,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
       "r": 249,
@@ -307,7 +307,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 720,
+      "width": 640,
       "height": 1280
     },
     "_anchorPoint": {
@@ -352,7 +352,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "a23235d1-15db-4b95-8439-a2e005bfff91"
+      "__uuid__": "e34a4582-0066-4feb-8366-0630c0899d67"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -399,7 +399,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 280,
+      "width": 444.88,
       "height": 50
     },
     "_anchorPoint": {
@@ -459,7 +459,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 280,
+      "width": 444.88,
       "height": 50
     },
     "_anchorPoint": {
@@ -469,7 +469,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -140,
+      "x": -222.44,
       "y": -25,
       "z": 0
     },
@@ -491,7 +491,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
-    "_id": "f8f/Y1p+FJ9rFPrjwwNz9W"
+    "_id": "b3EAmuOwJPpouJDsAts4Yb"
   },
   {
     "__type__": "cc.Label",
@@ -502,8 +502,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": true,
-    "_string": "微信好友排行榜",
-    "_N$string": "微信好友排行榜",
+    "_string": "Wechat Friends' Ranking",
+    "_N$string": "Wechat Friends' Ranking",
     "_fontSize": 40,
     "_lineHeight": 50,
     "_enableWrapText": true,
@@ -516,7 +516,7 @@
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
-    "_id": "6eUkYL6nlP1IKEVZZI48MV"
+    "_id": "32Is14CxtKYpoZ1BQ1pIEr"
   },
   {
     "__type__": "cc.RichText",
@@ -528,7 +528,7 @@
     "_enabled": true,
     "_fontFamily": "Arial",
     "_isSystemFontUsed": true,
-    "_N$string": "微信好友排行榜",
+    "_N$string": "Wechat Friends' Ranking",
     "_N$horizontalAlign": 0,
     "_N$fontSize": 40,
     "_N$font": null,
@@ -540,7 +540,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "button",
+    "_name": "homeButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
@@ -554,10 +554,12 @@
     "_level": 2,
     "_components": [
       {
-        "__id__": 18
+        "__id__": 17
       }
     ],
-    "_prefab": null,
+    "_prefab": {
+      "__id__": 18
+    },
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -578,8 +580,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 195,
-      "y": -511,
+      "x": 117,
+      "y": -483,
       "z": 0
     },
     "_scale": {
@@ -600,7 +602,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
-    "_id": "c5a60QNKFClobCrhVIxmJm"
+    "_id": "c6ztULTGNC0Ltc82i7+RJR"
   },
   {
     "__type__": "cc.Node",
@@ -609,22 +611,20 @@
     "_parent": {
       "__id__": 12
     },
-    "_children": [
-      {
-        "__id__": 14
-      }
-    ],
+    "_children": [],
     "_active": true,
     "_level": 2,
     "_components": [
       {
-        "__id__": 16
+        "__id__": 14
       },
       {
-        "__id__": 17
+        "__id__": 15
       }
     ],
-    "_prefab": null,
+    "_prefab": {
+      "__id__": 16
+    },
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -667,92 +667,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
-    "_id": "55opE9BcxBqY7BilpjJy+X"
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "Label",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 13
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 3,
-    "_components": [
-      {
-        "__id__": 15
-      }
-    ],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 100,
-      "height": 40
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
-      "x": 0,
-      "y": 0,
-      "z": 0,
-      "w": 1
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "groupIndex": 0,
-    "_id": "b1Tab9f8lI75ntG2cJYRM+"
-  },
-  {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 14
-    },
-    "_enabled": true,
-    "_useOriginalSize": false,
-    "_string": "Home",
-    "_N$string": "Home",
-    "_fontSize": 20,
-    "_lineHeight": 40,
-    "_enableWrapText": false,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 1,
-    "_N$cacheMode": 0,
-    "_id": "bdtyYQWE9NVKJDeo6fpj/E"
+    "_id": "afmG99Z1ZEyLPPR4JCzoMx"
   },
   {
     "__type__": "cc.Sprite",
@@ -765,7 +680,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
+      "__uuid__": "cc195f75-d8ed-4565-a894-e6be1c3b874d"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -780,7 +695,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "83gU4WLgtNMacOfJCP5Ehe"
+    "_id": "abPhT5WClM3KDp6vkRoLuB"
   },
   {
     "__type__": "cc.Widget",
@@ -807,7 +722,18 @@
     "_isAbsVerticalCenter": true,
     "_originalWidth": 100,
     "_originalHeight": 40,
-    "_id": "d7rH7VGcdDt4K/g1SiwuYL"
+    "_id": "9buXen6/dNqrXXYfeAg8fe"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 12
+    },
+    "asset": {
+      "__uuid__": "52317dbc-2a75-4324-9743-63cbc77b0a9c"
+    },
+    "fileId": "55opE9BcxBqY7BilpjJy+X",
+    "sync": false
   },
   {
     "__type__": "cc.Button",
@@ -822,8 +748,8 @@
     "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
-    "_N$transition": 2,
-    "transition": 2,
+    "_N$transition": 0,
+    "transition": 0,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 230,
@@ -867,7 +793,7 @@
       "a": 200
     },
     "_N$normalSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
+      "__uuid__": "cc195f75-d8ed-4565-a894-e6be1c3b874d"
     },
     "_N$pressedSprite": {
       "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
@@ -887,7 +813,18 @@
     "_N$target": {
       "__id__": 13
     },
-    "_id": "dcyuI+QcdII4t2PW390gUW"
+    "_id": "57aPMbFY9H+JvcqK+c7QJg"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 12
+    },
+    "asset": {
+      "__uuid__": "52317dbc-2a75-4324-9743-63cbc77b0a9c"
+    },
+    "fileId": "c5a60QNKFClobCrhVIxmJm",
+    "sync": false
   },
   {
     "__type__": "cc.Sprite",
@@ -949,7 +886,7 @@
     "_enabled": true,
     "_designResolution": {
       "__type__": "cc.Size",
-      "width": 720,
+      "width": 640,
       "height": 1280
     },
     "_fitWidth": false,
