@@ -252,7 +252,7 @@ cc.Class({
 
 
 
-        window.player_type = 'winter';
+        // window.player_type = 'winter';
         //window.start_with_rocket = true;
         window.restart = 0;
         window.level = 'hard';
