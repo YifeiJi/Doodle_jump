@@ -41,6 +41,11 @@ cc.Class({
       default: null,
       type: cc.Node
     },
+    optionButton: {
+      default: null,
+      type: cc.Node
+    },
+
 
     storeButton: {
       default: null,
@@ -61,10 +66,11 @@ cc.Class({
   // LIFE-CYCLE CALLBACKS:
 
   onLoad: function () {
-    // this.bg.setContentSize(this.node.width, this.node.height)
+    this.bg.setContentSize(this.node.width, this.node.height)
     window.player_type = 'winter' // 游戏地图初始化
     window.money = 10000 // 金钱初始化
-
+    window.level='easy'
+    window.sensibility='medium'
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('game')
       event.stopPropagation()
@@ -72,6 +78,10 @@ cc.Class({
 
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('highScores')
+      event.stopPropagation()
+    }, this.scoreButton),
+    this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      cc.director.loadScene('option')
       event.stopPropagation()
     }, this.scoreButton)
     // cc.game.addPersistRootNode(this.node)
@@ -96,7 +106,7 @@ cc.Class({
       } else {
         window.player_type = 'winter'
       }
-      console.log(`Game background switched to ${window.player_type}.`)
+      //console.log(`Game background switched to ${window.player_type}.`)
       event.stopPropagation()
     }, this.modeChoose)
 

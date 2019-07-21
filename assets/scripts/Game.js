@@ -195,22 +195,8 @@ cc.Class({
     set_level: function () {
 
         var player = this.player;
-        if (window.level == 'hard') {
-            this.interval = this.interval_hard;
-            this.param_basic = 0.6;
-            this.param_once = 0.5;
-            this.param_leftright = 0.2;
-            this.param_bed = 0.7;
-            this.param_protection = 0.6;
-            this.param_hat = 0.6;
-            this.param_rocket = 0;
-            this.param_monster=0.9;
-            this.param_monster_move=0.6;
-            this.param_loch=0.85;
-            this.loch_interval=2*this.maxY;
-            this.monster_interval=0.3*this.maxY;
-        }
-        if (window.level == 'medium') {
+        
+        if (window.level === 'medium') {
             this.interval = this.interval_medium;
             this.param_basic = 0.4;
             this.param_once = 0.5;
@@ -225,7 +211,7 @@ cc.Class({
             this.loch_interval=4*this.maxY;
             this.monster_interval=0.6*this.maxY;
         }
-        if (window.level == 'easy') {
+        if (window.level === 'easy') {
             this.interval = this.interval_easy;
             this.param_basic = 0.5;
             this.param_once = 0.7;
@@ -239,6 +225,20 @@ cc.Class({
             this.param_loch=0.95;
             this.loch_interval=6*this.maxY;
             this.monster_interval=this.maxY;
+        }else  {
+            this.interval = this.interval_hard;
+            this.param_basic = 0.6;
+            this.param_once = 0.5;
+            this.param_leftright = 0.2;
+            this.param_bed = 0.7;
+            this.param_protection = 0.6;
+            this.param_hat = 0.6;
+            this.param_rocket = 0;
+            this.param_monster=0.9;
+            this.param_monster_move=0.6;
+            this.param_loch=0.85;
+            this.loch_interval=2*this.maxY;
+            this.monster_interval=0.3*this.maxY;
         }
 
     },
@@ -255,7 +255,7 @@ cc.Class({
         // window.player_type = 'winter';
         //window.start_with_rocket = true;
         window.restart = 0;
-        window.level = 'hard';
+        //window.level = 'hard';
         this.scroll.zIndex = -1;
         this.bg.zIndex = -1;
         this.winterbg.zIndex = -1;
@@ -572,7 +572,7 @@ cc.Class({
                 var newloch = cc.instantiate(this.lochfab);
 
                 this.node.addChild(newloch, 0);
-                var scale = (Math.random() * 2 + 1);
+                var scale = (Math.random() * 0.5 + 1);
                 newloch.width = newloch.width * scale;
                 newloch.height = newloch.height * scale;
                 newloch.getComponent('Loch').game = this;
