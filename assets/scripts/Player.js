@@ -13,6 +13,7 @@ cc.Class({
 
     properties: {
 
+        timer:0,
         jumpHeight: 0,
         // 主角跳跃持续时间
         jumpDuration: 0,
@@ -27,6 +28,7 @@ cc.Class({
         hatdis: 0,
         rocketdis: 0,
         protected_time: 0,
+        scalerate:1,
         accLeft: false,
         accRight: false,
         onhat: false,
@@ -41,6 +43,8 @@ cc.Class({
         path: null,
         hatsound: null,
         rocketsound: null,
+        sound:false,
+        sensibility:10,
         bubble: {
             default: null,
             type: cc.Node
@@ -72,31 +76,49 @@ cc.Class({
         var rotation = cc.rotateBy(0.5, 360);
         this.node.runAction(rotation);
     },
-
+    rotate_: function () {
+        var rotation = cc.rotateBy(2, 360);
+        this.node.runAction(rotation);
+    },
     setSpeedy(value) {
 
         this.speedy = value;
 
 
     },
+    setSpeedx(value) {
 
+        this.speedx = value;
+
+
+    },
+    setscale:function(value)
+{
+this.scalerate=value;
+return;
+},
     play_jumpsound: function () {
+        if (this.sound===false) return;
         cc.audioEngine.play(this.jump_audio, false, 1);
         return;
     },
     play_dropsound: function () {
+        if (this.sound===false) return;
         cc.audioEngine.play(this.drop_audio, false, 1);
         return;
     },
     play_hatsound: function () {
+        if (this.sound===false) return;
         this.hatsound = cc.audioEngine.play(this.hat_audio, true, 0.5);
         return;
     },
     play_bedsound: function () {
+        if (this.sound===false) return;
         this.hatsound = cc.audioEngine.play(this.bed_audio, false, 0.5);
         return;
     },
     play_rocketsound: function () {
+        if (this.sound===false) return;
         this.rocketsound = cc.audioEngine.play(this.rocket_audio, true, 0.5);
         return;
     },
@@ -126,10 +148,24 @@ cc.Class({
     },
 
     onMove(event) {
-        this.accelx = 10 * event.acc.x;
+        this.accelx = this.sensibility * event.acc.x;
 
     },
 
+    set_low_sensibility:function()
+    {
+        this.sensibility=10;
+    },
+
+    set_medium_sensibility:function()
+    {
+        this.sensibility=40;
+    },
+    set_medium_sensibility:function()
+    {
+        this.sensibility=70;
+    },
+  
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -174,6 +210,26 @@ cc.Class({
 
 
     update(dt) {
+        this.timer=this.timer+1;
+        if (this.scalerate<1)
+        {
+        
+            this.node.scale=this.node.scale*this.scalerate;
+            if (this.node.scale<=0.1)
+            {
+                cc.director.loadScene('gameover');
+                window.score=this.game.getComponent('Game').score;
+            }
+            this.node.x=this.node.x+this.speedx*dt;
+            this.node.y=this.node.y+this.speedy*dt;
+            if (this.protected===true)
+            {
+                this.bubble.x=this.bubble.x+this.speedx*dt;
+                this.bubble.y=this.bubble.y+this.speedy*dt;
+                this.bubble.scale=this.bubble.scale*this.scalerate;
+            }
+            return;
+        }
         if ((this.node.y+this.node.height/2<-this.game.getComponent('Game').maxY)&&(this.fall===false))
         {
            this.fall=true;
@@ -201,7 +257,8 @@ cc.Class({
 
             if ((Math.abs(this.speedy)<=10)&&(this.restart==0))
             {
-
+                cc.director.loadScene('gameover');
+                window.score=this.game.getComponent('Game').score;
             }
             return;
         }

@@ -7,7 +7,19 @@
   ],
   "design-resolution-height": 1280,
   "design-resolution-width": 640,
-  "excluded-modules": [],
+  "excluded-modules": [
+    "ParticleSystem",
+    "TiledMap",
+    "Spine Skeleton",
+    "DragonBones",
+    "ScrollBar",
+    "ScrollView",
+    "PageView",
+    "PageViewIndicator",
+    "Layout",
+    "EditBox",
+    "VideoPlayer"
+  ],
   "facebook": {
     "appID": "",
     "audience": {
@@ -23,7 +35,7 @@
   "group-list": [
     "default"
   ],
-  "last-module-event-record-time": 1562660818003,
+  "last-module-event-record-time": 1563497944626,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,

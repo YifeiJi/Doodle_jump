@@ -45,18 +45,22 @@ cc.Class({
 
     touched_bottom: function () {
 
-        var player = this.game.player;
-        // if (((player.y-this.node.y-this.node.height<=this.Radius)&&(this.node.y-player.y-player.height<=this.Radius))&&
+      var player = this.game.player;
+      // if (((player.y-this.node.y-this.node.height<=this.Radius)&&(this.node.y-player.y-player.height<=this.Radius))&&
 
-        //(player.x+player.width>=this.node.x+this.Radius)&&(player.x<=this.node.x+this.node.width-this.Radius))
-        if ((Math.abs(this.node.y - 0.5 * player.height - player.y) <= this.Radius)
+      //(player.x+player.width>=this.node.x+this.Radius)&&(player.x<=this.node.x+this.node.width-this.Radius))
+      if ((Math.abs(this.node.y - 0.5 * player.height - player.y) <= this.Radius)
 
-            && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
+          && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
 
-            if (player.getComponent('Player').speedy >= 0) return true;
-        return false;
+         { if (player.getComponent('Player').speedy >= 0) return true;}
+         if ((this.node.y+this.node.height<=player.y+player.height/2)&&(this.node.y>player.y-player.height/2) && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
+         if((this.touched_top())===false) return true;
+        
+      return false;
 
-    },
+  },
+
     touched_top: function () {
 
         var player = this.game.player;
@@ -178,37 +182,20 @@ cc.Class({
     }
 
     this.timer += 1
-    if (this.type === 'move') {
       if (this.timer % 3 === 0) {
-        cc.loader.loadRes('monster_00', cc.SpriteFrame, function (err, spriteFrame) {
+        cc.loader.loadRes('./monster/monster_00', cc.SpriteFrame, function (err, spriteFrame) {
           self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
         })
       } else if (this.timer % 3 === 1) {
-        cc.loader.loadRes('monster_01', cc.SpriteFrame, function (err, spriteFrame) {
+        cc.loader.loadRes('./monster/monster_01', cc.SpriteFrame, function (err, spriteFrame) {
           self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
         })
       } else if (this.timer % 3 === 2) {
-        cc.loader.loadRes('monster_02', cc.SpriteFrame, function (err, spriteFrame) {
+        cc.loader.loadRes('./monster/monster_02', cc.SpriteFrame, function (err, spriteFrame) {
           self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
         })
       }
-    }
-
-    if (this.type !== 'move') {
-      if (this.timer % 3 === 0) {
-        cc.loader.loadRes('monster_01', cc.SpriteFrame, function (err, spriteFrame) {
-          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-        })
-      } else if (this.timer % 3 === 1) {
-        cc.loader.loadRes('monster_00', cc.SpriteFrame, function (err, spriteFrame) {
-          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-        })
-      } else if (this.timer % 3 === 2) {
-        cc.loader.loadRes('monster_01', cc.SpriteFrame, function (err, spriteFrame) {
-          self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-        })
-      }
-    }
+  
 
         if (-this.game.getComponent('Game').maxY> this.node.y+this.node.height) 
             this.node.destroy();

@@ -10,15 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/YifeiJi/Doodle_jump.git"
   },
-  "contributors": [ {
-      "name": "Niu Haoyu",
-    "email": "nhy17@mails.tsinghua.edu.cn",
-    "student id": "2017010729"
-    }, {
-    "name": "Ji Yifei",
-    "email": "XXX@mails.tsinghua.edu.cn",
-    "student id": "2017XXXXXX"
-    }
+  "contributors": [
+    "Niu Haoyu", 
+    "Ji Yifei"
   ],
   "license": "ISC",
   "bugs": {
