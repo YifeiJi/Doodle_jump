@@ -42,6 +42,16 @@ cc.Class({
       type: cc.Node
     },
 
+    storeButton: {
+      default: null,
+      type: cc.Node
+    },
+
+    modeChoose: {
+      default: null,
+      type: cc.Node
+    },
+
     maxScore: 0,
     finalScore: 0,
     shouldUpdateScore: false
@@ -50,17 +60,39 @@ cc.Class({
 
   // LIFE-CYCLE CALLBACKS:
 
-  // todo 采用preload进行优化
   onLoad: function () {
     this.bg.setContentSize(this.node.width, this.node.height)
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('game')
-    })
+      event.stopPropagation()
+    }, this.playButton)
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('highScores')
-    })
-    window.player_type = 'jungle'
+      event.stopPropagation()
+    }, this.scoreButton)
     // cc.game.addPersistRootNode(this.node)
+    window.player_type = 'winter' // 游戏地图初始化
+    this.modeChoose.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
+      this.opacity = 200 // 反馈效果：拖动物体时变透明
+      const delta = event.getDelta()
+      if (this.x + delta.x > -664 && this.x + delta.x < 618) {
+        this.x += delta.x
+      }
+      event.stopPropagation()
+    }, this.modeChoose)
+    this.modeChoose.on(cc.Node.EventType.TOUCH_END, function (event) {
+      this.opacity = 255 // 不再拖动时复原
+      const pos = this.x // 更新游戏地图
+      if (pos <= -350) {
+        window.player_type = 'jungle'
+      } else if (pos >= 290) {
+        window.player_type = 'underwater'
+      } else {
+        window.player_type = 'winter'
+      }
+      console.log(`Game background switched to ${window.player_type}.`)
+      event.stopPropagation()
+    }, this.modeChoose)
   },
 
   start () {
