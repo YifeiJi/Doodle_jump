@@ -62,16 +62,20 @@ cc.Class({
 
   onLoad: function () {
     this.bg.setContentSize(this.node.width, this.node.height)
+
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('game')
       event.stopPropagation()
     }, this.playButton)
+
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('highScores')
       event.stopPropagation()
     }, this.scoreButton)
     // cc.game.addPersistRootNode(this.node)
+
     window.player_type = 'winter' // 游戏地图初始化
+
     this.modeChoose.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
       this.opacity = 200 // 反馈效果：拖动物体时变透明
       const delta = event.getDelta()
@@ -80,9 +84,11 @@ cc.Class({
       }
       event.stopPropagation()
     }, this.modeChoose)
+
     this.modeChoose.on(cc.Node.EventType.TOUCH_END, function (event) {
       this.opacity = 255 // 不再拖动时复原
       const pos = this.x // 更新游戏地图
+      // todo: 自动移动并对齐到当前地图
       if (pos <= -350) {
         window.player_type = 'jungle'
       } else if (pos >= 290) {
@@ -93,6 +99,13 @@ cc.Class({
       console.log(`Game background switched to ${window.player_type}.`)
       event.stopPropagation()
     }, this.modeChoose)
+
+    this.storeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      /*
+       * todo: 开局可购买如下道具
+       * 竹蜻蜓、喷漆火箭、复活道具
+       */
+    })
   },
 
   start () {
