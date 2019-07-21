@@ -9,24 +9,25 @@
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 cc.Class({
-  extends: cc.Component,
+    extends: cc.Component,
 
-  properties: {
-    bg: {
-      default: null,
-      type: cc.Node
+
+    properties: {
+       toggle: cc.Toggle
+    },
+
+    onLoad: function () {
+       this.toggle.node.on('toggle', this.callback, this);
+    },
+
+    callback: function (event) {
+       var toggle = event;
+      
+       if(toggle.isChecked){
+       
+        window.sound=true;
+       }else{
+       window.sound=false;
+       }
     }
-  },
-
-  // LIFE-CYCLE CALLBACKS:
-
-  onLoad: function () {
-    this.bg.setContentSize(this.node.width, this.node.height)
-  },
-
-  start () {
-
-  }
-
-  // update (dt) {},
-})
+});

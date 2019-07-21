@@ -44,8 +44,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5921875,
-      "y": 0.5921875,
+      "x": 0.5360902255639097,
+      "y": 0.5360902255639097,
       "z": 1
     },
     "_quat": {
@@ -1172,6 +1172,9 @@
     "winterleftrightblock": {
       "__uuid__": "9087fa54-b5a9-409f-8c9e-edfa6f98ae39"
     },
+    "onceblock": {
+      "__uuid__": "75320c37-b82e-4d8e-84a2-d13bf4112bd6"
+    },
     "playerfab": {
       "__uuid__": "6b708bb6-4c57-466d-bb6b-2169a2226ebb"
     },
@@ -1196,11 +1199,15 @@
     "wintermonsterfab": {
       "__uuid__": "f038e576-3664-4960-9d2b-1f4558fb37f1"
     },
+    "lochfab": {
+      "__uuid__": "ff4057b6-6ba8-4010-8e33-0a704f569dce"
+    },
     "maxX": 0,
     "maxY": 0,
     "speed": 0,
     "speed_block": 0,
     "acc_block": 1,
+    "score": 0,
     "_id": "04d0xEnqhG1Z+Ph1GYVJkb"
   },
   {

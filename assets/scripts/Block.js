@@ -20,7 +20,7 @@ cc.Class({
         originx:0,
         originy:0,
         downspeed:0,
-        margin:25,
+        margin:20,
         first:true,
         hat:null,
         bed:null,
@@ -249,13 +249,26 @@ touched_bed:function() {
         if (this.touched()&&((this.type==='basic')||(this.type==='leftright'))) {
        
   
-            if (this.game.player.getComponent('Player').onhat===false)
+            if ((this.game.player.getComponent('Player').onhat===false)&&(this.game.player.getComponent('Player').onrocket===false))
             {
             this.game.player.getComponent('Player').setSpeedy(this.setspeed);
             this.game.player.getComponent('Player').play_jumpsound();
             }
             return;
         }
+        
+        if (this.touched()&&(this.type==='once')) {
+       
+  
+            if ((this.game.player.getComponent('Player').onhat===false)&&(this.game.player.getComponent('Player').onrocket===false))
+            {
+            this.game.player.getComponent('Player').setSpeedy(this.setspeed);
+            this.game.player.getComponent('Player').play_jumpsound();
+            this.node.destroy();
+            }
+            return;
+        }
+
 
 
         //this.speedy=this.speedy+this.acc*dt;

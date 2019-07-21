@@ -53,7 +53,10 @@ cc.Class({
 
             && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
 
-            if (player.getComponent('Player').speedy >= 0) return true;
+           { if (player.getComponent('Player').speedy >= 0) return true;}
+           if ((this.node.y+this.node.height<=player.y+player.height/2)&&(this.node.y>player.y-player.height/2) && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
+           if((this.touched_top())===false) return true;
+          
         return false;
 
     },
@@ -119,50 +122,31 @@ cc.Class({
         }
 
         this.timer += 1;
-        if (this.type === 'move') {
+
             if (this.timer % 3 === 0) {
 
-                cc.loader.loadRes("s_monster_00", cc.SpriteFrame, function (err, spriteFrame) {
+                cc.loader.loadRes("./monster/s_monster_00", cc.SpriteFrame, function (err, spriteFrame) {
                     self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
                 });
 
             } else if (this.timer % 3 === 1) {
 
-                cc.loader.loadRes("s_monster_01", cc.SpriteFrame, function (err, spriteFrame) {
+                cc.loader.loadRes("./monster/s_monster_01", cc.SpriteFrame, function (err, spriteFrame) {
                     self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
                 });
 
             } else if (this.timer % 3 === 2) {
 
-                cc.loader.loadRes("s_monster_02", cc.SpriteFrame, function (err, spriteFrame) {
+                cc.loader.loadRes("./monster/s_monster_02", cc.SpriteFrame, function (err, spriteFrame) {
                     self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
                 });
 
             }
-        }
+    
 
-        if (this.type !== 'move') {
-            cc.loader.loadRes("s_monster_10", cc.SpriteFrame, function (err, spriteFrame) {
-                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            });
+       
 
-            
-            /*
-            if ((this.timer % 2 === 0) && (this.timer % 5 === 0)) {
 
-                cc.loader.loadRes("s_monster_10", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                });
-
-            } else if ((this.timer % 2 === 1) && (this.timer % 5 === 0)) {
-
-                cc.loader.loadRes("s_monster_11", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                });
-
-            }*/
-
-        }
     
 
 
