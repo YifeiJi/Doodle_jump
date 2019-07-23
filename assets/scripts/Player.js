@@ -154,16 +154,16 @@ return;
 
     set_low_sensibility:function()
     {
-        this.sensibility=10;
+        this.sensibility=20;
     },
 
     set_medium_sensibility:function()
     {
-        this.sensibility=40;
+        this.sensibility=60;
     },
-    set_medium_sensibility:function()
+    set_high_sensibility:function()
     {
-        this.sensibility=70;
+        this.sensibility=100;
     },
   
 
@@ -271,13 +271,13 @@ return;
         this.speedy_2 = this.speedy_2 + this.acc_2 * dt;
         if (this.speedy_2 > 0) this.speedy_2 = 0;
         this.speedx = this.accelx * 80;//60;
-
+/*
         this.speedx = 0;
         if (this.accLeft) { this.speedx = -80; }
 
         if (this.accRight) { this.speedx = 80; }
 
-
+*/
 
         var self = this;
 

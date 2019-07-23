@@ -12,13 +12,15 @@
     "TiledMap",
     "Spine Skeleton",
     "DragonBones",
+    "ProgressBar",
     "ScrollBar",
     "ScrollView",
     "PageView",
     "PageViewIndicator",
     "Layout",
     "EditBox",
-    "VideoPlayer"
+    "VideoPlayer",
+    "Physics"
   ],
   "facebook": {
     "appID": "",
@@ -42,6 +44,5 @@
     "width": 960
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

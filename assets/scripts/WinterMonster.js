@@ -51,12 +51,10 @@ cc.Class({
         //(player.x+player.width>=this.node.x+this.Radius)&&(player.x<=this.node.x+this.node.width-this.Radius))
         if ((Math.abs(this.node.y - 0.5 * player.height - player.y) <= this.Radius)
 
-            && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
+            && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width)) { if (player.getComponent('Player').speedy >= 0) return true; }
+        if ((this.node.y + this.node.height <= player.y + player.height / 2) && (this.node.y > player.y - player.height / 2) && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
+            if ((this.touched_top()) === false) return true;
 
-           { if (player.getComponent('Player').speedy >= 0) return true;}
-           if ((this.node.y+this.node.height<=player.y+player.height/2)&&(this.node.y>player.y-player.height/2) && (player.x + 0.5 * player.width >= this.node.x) && (player.x - 0.5 * player.width <= this.node.x + this.node.width))
-           if((this.touched_top())===false) return true;
-          
         return false;
 
     },
@@ -90,13 +88,18 @@ cc.Class({
         this.timer = 0;
         this.setspeed = -1000;
         this.setspeed_2 = 500;
-        
+
 
     },
 
 
     update(dt) {
 
+        if (-this.game.getComponent('Game').maxY > this.node.y + this.node.height)
+        {
+            this.node.destroy();
+            return;
+        }
         var self = this;
 
 
@@ -123,37 +126,36 @@ cc.Class({
 
         this.timer += 1;
 
-            if (this.timer % 3 === 0) {
+        if (this.timer % 3 === 0) {
 
-                cc.loader.loadRes("./monster/s_monster_00", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                });
+            cc.loader.loadRes("./monster/s_monster_00", cc.SpriteFrame, function (err, spriteFrame) {
+                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+            });
 
-            } else if (this.timer % 3 === 1) {
+        } else if (this.timer % 3 === 1) {
 
-                cc.loader.loadRes("./monster/s_monster_01", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                });
+            cc.loader.loadRes("./monster/s_monster_01", cc.SpriteFrame, function (err, spriteFrame) {
+                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+            });
 
-            } else if (this.timer % 3 === 2) {
+        } else if (this.timer % 3 === 2) {
 
-                cc.loader.loadRes("./monster/s_monster_02", cc.SpriteFrame, function (err, spriteFrame) {
-                    self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                });
+            cc.loader.loadRes("./monster/s_monster_02", cc.SpriteFrame, function (err, spriteFrame) {
+                self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+            });
 
-            }
-    
-
-       
-
-
-    
+        }
 
 
 
-        if (-this.game.getComponent('Game').maxY> this.node.y+this.node.height) 
-            this.node.destroy();
-//if (this.game.player.getComponent('Player').alive === true) 
-this.node.y = this.node.y + this.game.getComponent('Game').speed * dt;
+
+
+
+
+
+
+      
+        //if (this.game.player.getComponent('Player').alive === true) 
+        this.node.y = this.node.y + this.game.getComponent('Game').speed * dt;
     }
 });

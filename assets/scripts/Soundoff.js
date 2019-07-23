@@ -17,6 +17,8 @@ cc.Class({
     },
 
     onLoad: function () {
+      if (window.sound===false)
+      this.toggle.isChecked=true;
        this.toggle.node.on('toggle', this.callback, this);
     },
 

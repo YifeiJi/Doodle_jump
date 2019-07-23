@@ -17,6 +17,8 @@ cc.Class({
     },
 
     onLoad: function () {
+      if (window.level==='hard')
+      this.toggle.isChecked=true;
        this.toggle.node.on('toggle', this.callback, this);
     },
 
@@ -24,7 +26,6 @@ cc.Class({
        var toggle = event;
       
        if(toggle.isChecked){
-       
         window.level='hard';
        }
        

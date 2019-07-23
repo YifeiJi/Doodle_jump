@@ -174,10 +174,11 @@ cc.Class({
 
         if (window.sensibility === 'low')
             newplayer.getComponent('Player').set_low_sensibility;
-        else if (window.sensibility === 'medium')
-            newplayer.getComponent('Player').set_medium_sensibility;
+       
         else if (window.sensibility === 'high')
             newplayer.getComponent('Player').set_high_sensibility;
+            else 
+            newplayer.getComponent('Player').set_medium_sensibility;
 
         this.node.addChild(newplayer, 2);
         newplayer.setPosition(30, -this.maxY * 0.6 + 60, 10000);
@@ -195,8 +196,38 @@ cc.Class({
     set_level: function () {
 
         var player = this.player;
-        
-        if (window.level === 'medium') {
+       
+        if (window.level === 'easy') {
+            this.interval = this.interval_easy;
+            this.param_basic = 0.3;
+            this.param_once = 0.9;
+            this.param_leftright = 0.9;
+            this.param_bed = 0.9;
+            this.param_protection = 0.4;
+            this.param_hat = 0.5;
+            this.param_rocket = 0;
+            this.param_monster=0.9;
+            this.param_monster_move=1.1;
+            this.param_loch=1.1;
+            this.loch_interval=6*this.maxY;
+            this.monster_interval=2*this.maxY;
+        }else if (window.level === 'hard')  {
+            this.interval = this.interval_hard;
+            this.param_basic = 0.7;
+            this.param_once = 0.4;
+            this.param_leftright = 0.2;
+            this.param_bed = 0.7;
+            this.param_protection = 0.6;
+            this.param_hat = 0.6;
+            this.param_rocket = 0;
+            this.param_monster=0.9;
+            this.param_monster_move=0.6;
+            this.param_loch=0.85;
+            this.loch_interval=2*this.maxY;
+            this.monster_interval=0.3*this.maxY;
+        }
+         
+        else  {
             this.interval = this.interval_medium;
             this.param_basic = 0.4;
             this.param_once = 0.5;
@@ -210,35 +241,6 @@ cc.Class({
             this.param_loch=0.9;
             this.loch_interval=4*this.maxY;
             this.monster_interval=0.6*this.maxY;
-        }
-        if (window.level === 'easy') {
-            this.interval = this.interval_easy;
-            this.param_basic = 0.5;
-            this.param_once = 0.7;
-            this.param_leftright = 0.6;
-            this.param_bed = 0.9;
-            this.param_protection = 0.4;
-            this.param_hat = 0.5;
-            this.param_rocket = 0;
-            this.param_monster=0.9;
-            this.param_monster_move=1.1;
-            this.param_loch=0.95;
-            this.loch_interval=6*this.maxY;
-            this.monster_interval=this.maxY;
-        }else  {
-            this.interval = this.interval_hard;
-            this.param_basic = 0.6;
-            this.param_once = 0.5;
-            this.param_leftright = 0.2;
-            this.param_bed = 0.7;
-            this.param_protection = 0.6;
-            this.param_hat = 0.6;
-            this.param_rocket = 0;
-            this.param_monster=0.9;
-            this.param_monster_move=0.6;
-            this.param_loch=0.85;
-            this.loch_interval=2*this.maxY;
-            this.monster_interval=0.3*this.maxY;
         }
 
     },
@@ -361,8 +363,11 @@ cc.Class({
 
 
             randx = (Math.random() - 0.5) * 2 * 0.9 * this.maxX;
-            if (Math.random() > 0.6) randy = y + Math.random() * this.interval + 40; else
-                randy = y + Math.random() * this.interval * (1 + Math.random()) + 40;
+            if (Math.random() > 0.6) randy = y + Math.random() * this.interval + this.interval; else
+            {var delta=this.interval *  Math.random()*2;
+                if (delta<this.interval) delta=this.interval;
+                randy = y +delta;
+            }
 
 
             var newBlock;

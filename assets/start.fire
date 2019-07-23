@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.4140625,
-      "y": 0.4140625,
+      "x": 0.39375,
+      "y": 0.39375,
       "z": 1
     },
     "_quat": {
@@ -59,7 +59,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Canvas",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 1
     },
@@ -1244,7 +1244,6 @@
     "maxScore": 0,
     "finalScore": 0,
     "shouldUpdateScore": false,
-    "initialized": false,
     "_id": "7cM8t7ihZJjLeM2Cw6onJ5"
   }
 ]

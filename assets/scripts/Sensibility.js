@@ -12,11 +12,18 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        toggle: cc.Toggle
+        toggle_1: cc.Toggle,
+        toggle_2: cc.Toggle,
+        toggle_3: cc.Toggle
      },
  
      onLoad: function () {
-        this.toggle.isChecked=true;
+         if (window.sensibility==='high')
+        this.toggle_1.isChecked=true;
+        else  if (window.sensibility==='medium')
+        this.toggle_2.isChecked=true;
+        else  if (window.sensibility==='low')
+        this.toggle_3.isChecked=true;
         //node.on('toggle', this.callback, this);
      },
 

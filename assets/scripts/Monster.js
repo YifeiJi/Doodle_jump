@@ -102,7 +102,11 @@ cc.Class({
     update(dt) {
 
         var self = this;
-
+        if (-this.game.getComponent('Game').maxY > this.node.y + this.node.height)
+        {
+            this.node.destroy();
+            return;
+        }
 
         if (this.type === 'move') {
             this.node.x = this.node.x + this.speedx;
