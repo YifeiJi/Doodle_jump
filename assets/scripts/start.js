@@ -41,11 +41,11 @@ cc.Class({
       default: null,
       type: cc.Node
     },
+
     optionButton: {
       default: null,
       type: cc.Node
     },
-
 
     storeButton: {
       default: null,
@@ -60,7 +60,6 @@ cc.Class({
     maxScore: 0,
     finalScore: 0,
     shouldUpdateScore: false
-
   },
 
   // LIFE-CYCLE CALLBACKS:
@@ -68,9 +67,10 @@ cc.Class({
   onLoad: function () {
     this.bg.setContentSize(this.node.width, this.node.height)
     window.player_type = 'winter' // 游戏地图初始化
-    window.money = 10000 // 金钱初始化
     window.level='easy'
     window.sensibility='medium'
+
+    // todo: 按钮按下后变色，反馈当前状态
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('game')
       event.stopPropagation()
@@ -80,6 +80,7 @@ cc.Class({
       cc.director.loadScene('highScores')
       event.stopPropagation()
     }, this.scoreButton),
+
     this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('option')
       event.stopPropagation()
@@ -102,7 +103,7 @@ cc.Class({
       if (pos <= -350) {
         window.player_type = 'jungle'
       } else if (pos >= 290) {
-        window.player_type = 'underwater' // todo: 试玩发现死亡后没有终止界面
+        window.player_type = 'underwater'
       } else {
         window.player_type = 'winter'
       }
@@ -116,14 +117,23 @@ cc.Class({
   },
 
   start () {
-
+    /*
+    wx.getSystemInfo({
+      success (res) {
+        console.log(`当前微信SDK版本: ${res.SDKVersion}`)
+      },
+      fail () {
+        console.log('get SDK Version failed.')
+      }
+    })
+     */
   },
 
   update (dt) {
     if (this.shouldUpdateScore) {
       if (this.maxScore < this.finalScore) {
         // 构建发布时指定开放数据域
-        window.wx.postMessage({
+        wx.postMessage({
           command: 'upload', // 上传分数
           score: this.finalScore
         })

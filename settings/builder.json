@@ -36,14 +36,14 @@
     "zip": false
   },
   "startScene": "baca428f-ee78-4316-934b-a27076211ed9",
-  "title": "NewProject",
+  "title": "DoodleJump",
   "webOrientation": "auto",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
     "appid": "wxf9517d909ce9724c",
     "orientation": "portrait",
     "separate_engine": false,
-    "subContext": ""
+    "subContext": "wx-open-data-project"
   },
   "xxteaKey": "9936e262-c066-4b",
   "zipCompressJs": true
