@@ -15,30 +15,34 @@ cc.Class({
     homeButton: {
       default: null,
       type: cc.Node
+    },
+
+    background: {
+      default: null,
+      type: cc.Node
     }
   },
 
   // LIFE-CYCLE CALLBACKS:
 
   onLoad () {
+    this.background.setContentSize(this.node.width, this.node.height)
+
     this.homeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('start')
     })
   },
 
   start () {
-    /*
-    window.wx.postMessage({
+    wx.postMessage({
       command: 'open' // 绘制分数排行榜
     })
-    const openDataContext = window.wx.getOpenDataContext()
+    const openDataContext = wx.getOpenDataContext()
     const sharedCanvas = openDataContext.canvas
 
-    const canvas = window.nwx.createCanvas()
+    const canvas = wx.createCanvas()
     const context = canvas.getContext('2d')
     context.drawImage(sharedCanvas, 0, 0)
-     */
   }
-
   // update (dt) {},
 })

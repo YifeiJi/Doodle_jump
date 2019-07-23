@@ -46,7 +46,6 @@ cc.Class({
       type: cc.Node
     },
 
-
     storeButton: {
       default: null,
       type: cc.Node
@@ -63,39 +62,33 @@ cc.Class({
 
   },
 
-
   load_subpackage: function () {
-
     cc.loader.downloader.loadSubpackage('block', function (err) {
       if (err) {
-        return console.error(err);
+        return console.error(err)
       }
-    });
-
+    })
 
     cc.loader.downloader.loadSubpackage('player', function (err) {
       if (err) {
-        return console.error(err);
+        return console.error(err)
       }
-    });
+    })
     cc.loader.downloader.loadSubpackage('monster', function (err) {
       if (err) {
-        return console.error(err);
+        return console.error(err)
       }
-    });
+    })
   },
-
-
 
   // LIFE-CYCLE CALLBACKS:
 
   onLoad: function () {
-    //this.load_subpackage();
+    // this.load_subpackage();
     this.bg.setContentSize(this.node.width, this.node.height)
     window.player_type = 'winter' // 游戏地图初始化
-    window.money = 10000 // 金钱初始化
-    //window.level = 'easy'
-    //window.sensibility = 'medium'
+    // window.level = 'easy'
+    // window.sensibility = 'medium'
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('game')
       event.stopPropagation()
@@ -104,11 +97,12 @@ cc.Class({
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('highScores')
       event.stopPropagation()
-    }, this.scoreButton),
-      this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-        cc.director.loadScene('option')
-        event.stopPropagation()
-      }, this.scoreButton)
+    }, this.scoreButton)
+
+    this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      cc.director.loadScene('option')
+      event.stopPropagation()
+    }, this.scoreButton)
     // cc.game.addPersistRootNode(this.node)
 
     this.modeChoose.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
@@ -127,11 +121,11 @@ cc.Class({
       if (pos <= -350) {
         window.player_type = 'jungle'
       } else if (pos >= 290) {
-        window.player_type = 'underwater' // todo: 试玩发现死亡后没有终止界面
+        window.player_type = 'underwater'
       } else {
         window.player_type = 'winter'
       }
-      //console.log(`Game background switched to ${window.player_type}.`)
+      // console.log(`Game background switched to ${window.player_type}.`)
       event.stopPropagation()
     }, this.modeChoose)
 
@@ -140,15 +134,24 @@ cc.Class({
     }, this.storeButton)
   },
 
-  start() {
-
+  start () {
+    /*
+      wx.getSystemInfo({
+       success (res) {
+         console.log(`当前微信SDK版本: ${res.SDKVersion}`)
+       },
+       fail () {
+         console.log('get SDK Version failed.')
+       }
+     })
+     */
   },
 
-  update(dt) {
+  update (dt) {
     if (this.shouldUpdateScore) {
       if (this.maxScore < this.finalScore) {
         // 构建发布时指定开放数据域
-        window.wx.postMessage({
+        wx.postMessage({
           command: 'upload', // 上传分数
           score: this.finalScore
         })
