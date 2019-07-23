@@ -11,7 +11,7 @@
     "url": "git+https://github.com/YifeiJi/Doodle_jump.git"
   },
   "contributors": [
-    "Niu Haoyu", 
+    "Niu Haoyu",
     "Ji Yifei"
   ],
   "license": "ISC",
@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/YifeiJi/Doodle_jump#readme",
   "devDependencies": {
-    "eslint": "^6.0.1",
+    "eslint": "^6.1.0",
     "eslint-config-standard": "^13.0.1",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0"

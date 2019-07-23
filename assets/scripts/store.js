@@ -40,11 +40,7 @@ cc.Class({
     resurrect: {
       default: null,
       type: cc.Node
-    },
-
-    rocketNumber: 0,
-    hatNumber: 0,
-    reviveNumber: 5
+    }
   },
 
   // LIFE-CYCLE CALLBACKS:
@@ -55,71 +51,85 @@ cc.Class({
      * 开局可购买如下道具
      * 竹蜻蜓、喷气火箭、复活道具
      */
+    this.readLocalWXStorage()
 
-    // 从本地读取剩余金钱
-    wx.getStorage({
-      key: 'money',
-      success: res => {
-        if (!!res.data) {
-          window.money = parseInt(res.data, 10)
-        } else {
-          window.money = 10000 // 如果未定义，则初始化
-        }
-      },
-      fail () {
-        window.money = 0
-        console.log('读取本地微信 money 缓存数据失败。')
-      }
-    })
     this.moneyText.string = `money: ${window.money}`
-
     this.homeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('start')
     }, this.homeButton)
-
     this.rocket.on(cc.Node.EventType.TOUCH_END, function (event) {
       if (window.money >= 200) {
         window.money -= 200
-        this.rocketNumber++
-        // 仅在开始时和购买后更新金钱数量（并将当前金钱存储到本地），降低计算负担
-        this.moneyText.string = `money: ${window.money}`
-        wx.setStorage({
-          key: 'money',
-          data: `${window.money}`
-        })
+        window.rocketNumber++
+        wx.setStorageSync('money', `${window.money}`)
+        wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
       }
     }, this.rocket)
-
     this.hat.on(cc.Node.EventType.TOUCH_END, function (event) {
       if (window.money >= 100) {
         window.money -= 100
-        this.hatNumber++
-        // 仅在开始时和购买后更新金钱数量（并将当前金钱存储到本地），降低计算负担
-        this.moneyText.string = `money: ${window.money}`
-        wx.setStorage({
-          key: 'money',
-          data: `${window.money}`
-        })
+        window.hatNumber++
+        wx.setStorageSync('money', `${window.money}`)
+        wx.setStorageSync('hatNumber', `${window.hatNumber}`)
       }
     }, this.hat)
-
     this.resurrect.on(cc.Node.EventType.TOUCH_END, function (event) {
-      window.money -= 500
-      this.reviveNumber++
-      // 仅在开始时和购买后更新金钱数量（并将当前金钱存储到本地），降低计算负担
-      this.moneyText.string = `money: ${window.money}`
-      wx.setStorage({
-        key: 'money',
-        data: `${window.money}`
-      })
+      if (window.money >= 500) {
+        window.money -= 500
+        window.reviveNumber++
+        wx.setStorageSync('money', `${window.money}`)
+        wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
+      }
     }, this.resurrect)
   },
 
+  readLocalWXStorage: function () {
+    // 从本地读取剩余金钱
+    const money = wx.getStorageSync('money')
+    if (money === '') {
+      window.money = 10000 // 如果未定义，则初始化
+      console.log('本地微信 money 缓存数据为空。')
+      wx.setStorageSync('money', `${window.money}`)
+    } else {
+      window.money = parseInt(money, 10)
+    }
+
+    // 从本地读取剩余rocketNumber
+    const rocketNumber = wx.getStorageSync('rocketNumber')
+    if (rocketNumber === '') {
+      window.rocketNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 rocketNumber 缓存数据为空。')
+      wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
+    } else {
+      window.rocketNumber = parseInt(rocketNumber, 10)
+    }
+
+    // 从本地读取剩余hatNumber
+    const hatNumber = wx.getStorageSync('hatNumber')
+    if (hatNumber === '') {
+      window.hatNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 hatNumber 缓存数据为空。')
+      wx.setStorageSync('hatNumber', `${window.hatNumber}`)
+    } else {
+      window.hatNumber = parseInt(hatNumber, 10)
+    }
+
+    // 从本地读取剩余reviveNumber
+    const reviveNumber = wx.getStorageSync('reviveNumber')
+    if (reviveNumber === '') {
+      window.reviveNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 reviveNumber 缓存数据为空。')
+      wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
+    } else {
+      window.reviveNumber = parseInt(reviveNumber, 10)
+    }
+  },
+
   start () {
-    
+
   },
 
   update (dt) {
-
+    this.moneyText.string = `money: ${window.money}`
   }
 })

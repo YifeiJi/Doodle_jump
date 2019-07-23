@@ -67,8 +67,8 @@ cc.Class({
   onLoad: function () {
     this.bg.setContentSize(this.node.width, this.node.height)
     window.player_type = 'winter' // 游戏地图初始化
-    window.level='easy'
-    window.sensibility='medium'
+    window.level = 'easy'
+    window.sensibility = 'medium'
 
     // todo: 按钮按下后变色，反馈当前状态
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
@@ -79,7 +79,7 @@ cc.Class({
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('highScores')
       event.stopPropagation()
-    }, this.scoreButton),
+    }, this.scoreButton)
 
     this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('option')
@@ -107,7 +107,7 @@ cc.Class({
       } else {
         window.player_type = 'winter'
       }
-      //console.log(`Game background switched to ${window.player_type}.`)
+      // console.log(`Game background switched to ${window.player_type}.`)
       event.stopPropagation()
     }, this.modeChoose)
 
