@@ -46,6 +46,9 @@ cc.Class({
   // LIFE-CYCLE CALLBACKS:
 
   onLoad () {
+    // todo: 美化商店界面按钮
+    // todo: 显示当前购买的道具数量
+    // todo: Hat和Rocket不能同时购买（且最多只能买一个）（可以参照options）
     this.background.setContentSize(this.node.width, this.node.height)
     /*
      * 开局可购买如下道具

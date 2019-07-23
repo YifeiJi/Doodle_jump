@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.3671875,
-      "y": 0.3671875,
+      "x": 0.4140625,
+      "y": 0.4140625,
       "z": 1
     },
     "_quat": {
@@ -1213,7 +1213,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
-    "_id": "e8jIhY+nVKSqWo/+1kfJOx"
+    "_id": "84CN6WE55MFaTS9qmlmWZr"
   },
   {
     "__type__": "cc.Label",
@@ -1238,7 +1238,7 @@
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
-    "_id": "e41gqbQrBC4IHYGdF9wmwG"
+    "_id": "81P7YkVKhCsqjLanoUssHY"
   },
   {
     "__type__": "cc.RichText",
@@ -1286,7 +1286,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 280.23,
+      "width": 357.95,
       "height": 40
     },
     "_anchorPoint": {
@@ -1329,8 +1329,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "Money: 0x7fffffff",
-    "_N$string": "Money: 0x7fffffff",
+    "_string": "Money: Uninitialized",
+    "_N$string": "Money: Uninitialized",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -1704,9 +1704,6 @@
     "resurrect": {
       "__id__": 21
     },
-    "rocketNumber": 0,
-    "hatNumber": 0,
-    "reviveNumber": 5,
     "_id": "2cNsHQ5g9Mu5ySrwR9a5uZ"
   }
 ]
