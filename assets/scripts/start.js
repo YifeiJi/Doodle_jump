@@ -12,21 +12,6 @@ cc.Class({
   extends: cc.Component,
 
   properties: {
-    // foo: {
-    //     // ATTRIBUTES:
-    //     default: null,        // The default value will be used only when the component attaching
-    //                           // to a node for the first time
-    //     type: cc.SpriteFrame, // optional, default is typeof default
-    //     serializable: true,   // optional, default is true
-    // },
-    // bar: {
-    //     get () {
-    //         return this._bar;
-    //     },
-    //     set (value) {
-    //         this._bar = value;
-    //     }
-    // },
     bg: {
       default: null,
       type: cc.Node
@@ -56,10 +41,7 @@ cc.Class({
       type: cc.Node
     },
 
-    maxScore: 0,
-    finalScore: 0,
-    shouldUpdateScore: false
-
+    maxLocalScore: 0
   },
 
   load_subpackage: function () {
@@ -94,11 +76,6 @@ cc.Class({
       event.stopPropagation()
     }, this.playButton)
 
-    this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      cc.director.loadScene('highScores')
-      event.stopPropagation()
-    }, this.scoreButton)
-
     this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('option')
       event.stopPropagation()
@@ -132,32 +109,68 @@ cc.Class({
     this.storeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('store')
     }, this.storeButton)
+
+    this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      cc.director.loadScene('highScores')
+      event.stopPropagation()
+    }, this.scoreButton)
   },
 
   start () {
-    /*
-      wx.getSystemInfo({
-       success (res) {
-         console.log(`当前微信SDK版本: ${res.SDKVersion}`)
-       },
-       fail () {
-         console.log('get SDK Version failed.')
-       }
-     })
-     */
+    this.initUserInfoButton()
+  },
+
+  initUserInfoButton () {
+    if (typeof wx === 'undefined') {
+      return
+    }
+
+    wx.getSetting({
+      success (res) {
+        if (!res.authSetting['scope.userInfo']) { // 如果用户尚未授权，则请求授权
+          const systemInfo = wx.getSystemInfoSync()
+          const width = systemInfo.windowWidth
+          const height = systemInfo.windowHeight
+          const button = wx.createUserInfoButton({
+            type: 'text',
+            text: '',
+            style: {
+              left: 0,
+              top: 0,
+              width: width,
+              height: height,
+              lineHeight: 40,
+              backgroundColor: '#00000000',
+              color: '#00000000',
+              textAlign: 'center',
+              fontSize: 10,
+              borderRadius: 4
+            }
+          })
+
+          button.onTap((res) => {
+            const userInfo = res.userInfo
+            if (!userInfo) {
+              return
+            }
+            button.hide()
+            button.destroy()
+          })
+        }
+      }
+    })
   },
 
   update (dt) {
-    if (this.shouldUpdateScore) {
-      if (this.maxScore < this.finalScore) {
-        // 构建发布时指定开放数据域
+    if (window.shouldUpdateScore) {
+      if (window.score > this.maxLocalScore) {
+        this.maxLocalScore = window.score
         wx.postMessage({
           command: 'upload', // 上传分数
-          score: this.finalScore
+          score: window.score
         })
-        this.maxScore = this.finalScore
       }
-      this.shouldUpdateScore = false
     }
+    window.shouldUpdateScore = false
   }
 })

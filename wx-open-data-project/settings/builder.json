@@ -20,7 +20,7 @@
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
-  "md5Cache": true,
+  "md5Cache": false,
   "mergeStartScene": false,
   "optimizeHotUpdate": false,
   "orientation": {
@@ -29,22 +29,22 @@
     "portrait": false,
     "upsideDown": false
   },
-  "packageName": "org.cocos2d.NewProject",
+  "packageName": "org.cocos2d.wx-open-data-project",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait",
     "zip": false
   },
-  "startScene": "baca428f-ee78-4316-934b-a27076211ed9",
-  "title": "NewProject",
+  "startScene": "0746ca5a-db0b-482d-ba6c-b86dff40974b",
+  "title": "wx-open-data-project",
   "webOrientation": "auto",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
-    "appid": "wxf9517d909ce9724c",
+    "appid": "wx6ac3f5090a6b99c5",
     "orientation": "portrait",
     "separate_engine": false,
-    "subContext": "wx-open-data-project"
+    "subContext": ""
   },
-  "xxteaKey": "9936e262-c066-4b",
+  "xxteaKey": "bb1aa338-de83-4e",
   "zipCompressJs": true
 }

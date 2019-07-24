@@ -5,22 +5,18 @@
       true
     ]
   ],
-  "design-resolution-height": 1280,
-  "design-resolution-width": 640,
+  "design-resolution-height": 640,
+  "design-resolution-width": 960,
   "excluded-modules": [
-    "ParticleSystem",
-    "TiledMap",
-    "Spine Skeleton",
     "DragonBones",
-    "ProgressBar",
-    "ScrollBar",
-    "ScrollView",
-    "PageView",
-    "PageViewIndicator",
-    "Layout",
+    "Dynamic Atlas",
     "EditBox",
-    "VideoPlayer",
-    "Physics"
+    "MotionStreak",
+    "ParticleSystem",
+    "Renderer Texture",
+    "RichText",
+    "Spine Skeleton",
+    "TiledMap"
   ],
   "facebook": {
     "appID": "",
@@ -37,7 +33,7 @@
   "group-list": [
     "default"
   ],
-  "last-module-event-record-time": 1563497944626,
+  "last-module-event-record-time": 1563781618076,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,

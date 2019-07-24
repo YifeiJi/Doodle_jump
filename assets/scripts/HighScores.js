@@ -37,12 +37,9 @@ cc.Class({
     wx.postMessage({
       command: 'open' // 绘制分数排行榜
     })
-    const openDataContext = wx.getOpenDataContext()
-    const sharedCanvas = openDataContext.canvas
-
-    const canvas = wx.createCanvas()
-    const context = canvas.getContext('2d')
-    context.drawImage(sharedCanvas, 0, 0)
   }
-  // update (dt) {},
+  /* update (dt) {
+   * 理论上当开放数据域被唤起后，只要 WXSubContextView 组件 load 成功，开放数据域贴图就开始更新到主域并显示，之后每帧都会更新贴图。
+  },
+   */
 })

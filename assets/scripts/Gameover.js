@@ -65,6 +65,7 @@ cc.Class({
   start () {
     this.bg.setContentSize(2 * this.maxX, 2 * this.maxY)
     var score = window.score
+    window.shouldUpdateScore = true
     this.scoreDisplay.string = '<color=#222222>Your score:  ' + parseInt(score) + '</n>'
   }
 
