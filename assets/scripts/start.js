@@ -12,7 +12,7 @@ cc.Class({
   extends: cc.Component,
 
   properties: {
-    bg: {
+    background: {
       default: null,
       type: cc.Node
     },
@@ -68,8 +68,10 @@ cc.Class({
   onLoad: function () {
     // this.load_subpackage();
     // todo: 美化按钮点击后效果
-    this.bg.setContentSize(this.node.width, this.node.height)
-    window.player_type = 'winter' // 游戏地图初始化
+    window.player_type = 'jungle' // 游戏地图初始化
+    // 设置适配模式
+    
+    cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
     // window.level = 'easy'
     // window.sensibility = 'medium'
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
@@ -86,7 +88,7 @@ cc.Class({
     this.modeChoose.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
       this.opacity = 200 // 反馈效果：拖动物体时变透明
       const delta = event.getDelta()
-      if (this.x + delta.x > -664 && this.x + delta.x < 618) {
+      if (this.x + delta.x > 320 && this.x + delta.x < 2240) {
         this.x += delta.x
       }
       event.stopPropagation()
@@ -96,10 +98,12 @@ cc.Class({
       this.opacity = 255 // 不再拖动时复原
       const pos = this.x // 更新游戏地图
       // todo: 自动移动并对齐到当前地图
-      if (pos <= -350) {
-        window.player_type = 'jungle'
-      } else if (pos >= 290) {
+      if (pos <= 640) {
         window.player_type = 'underwater'
+      } else if (pos >= 1920) {
+        window.player_type = 'default'
+      } else if (pos <= 1280) {
+        window.player_type = 'jungle'
       } else {
         window.player_type = 'winter'
       }
