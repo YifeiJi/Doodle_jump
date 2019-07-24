@@ -67,6 +67,7 @@ cc.Class({
 
   onLoad: function () {
     // this.load_subpackage();
+    // todo: 美化按钮点击后效果
     this.bg.setContentSize(this.node.width, this.node.height)
     window.player_type = 'winter' // 游戏地图初始化
     // window.level = 'easy'

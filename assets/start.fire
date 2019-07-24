@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.37889404296875,
-      "y": 0.37889404296875,
+      "x": 0.325,
+      "y": 0.325,
       "z": 1
     },
     "_quat": {
@@ -514,8 +514,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 40
+      "width": 223,
+      "height": 105
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -524,8 +524,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 129,
-      "y": -437,
+      "x": -156,
+      "y": -347,
       "z": 0
     },
     "_scale": {
@@ -574,15 +574,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 230,
-      "g": 230,
-      "b": 230,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 40
+      "width": 223,
+      "height": 105
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -686,7 +686,7 @@
     "_useOriginalSize": false,
     "_string": "Store",
     "_N$string": "Store",
-    "_fontSize": 20,
+    "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": false,
     "_N$file": null,
@@ -711,7 +711,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
+      "__uuid__": "84c20572-45c0-44c8-bf4f-0db1fcc024e3"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -768,8 +768,8 @@
     "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
-    "_N$transition": 2,
-    "transition": 2,
+    "_N$transition": 0,
+    "transition": 0,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 230,
@@ -813,7 +813,7 @@
       "a": 200
     },
     "_N$normalSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
+      "__uuid__": "84c20572-45c0-44c8-bf4f-0db1fcc024e3"
     },
     "_N$pressedSprite": {
       "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
@@ -1241,9 +1241,7 @@
     "modeChoose": {
       "__id__": 5
     },
-    "maxScore": 0,
-    "finalScore": 0,
-    "shouldUpdateScore": false,
+    "maxLocalScore": 0,
     "_id": "7cM8t7ihZJjLeM2Cw6onJ5"
   }
 ]
