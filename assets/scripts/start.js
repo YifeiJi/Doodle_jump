@@ -70,7 +70,7 @@ cc.Class({
     // todo: 美化按钮点击后效果
     window.player_type = 'jungle' // 游戏地图初始化
     // 设置适配模式
-    
+    this.background.setContentSize(this.node.width, this.node.height)
     cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
     // window.level = 'easy'
     // window.sensibility = 'medium'
