@@ -60,11 +60,14 @@ cc.Class({
     wx.getUserCloudStorage({
       keyList: ['maxScore'],
       success: res => {
-        cloudScore = parseInt(res.KVDataList[0].value, 10)
-        if (score <= cloudScore) {
-          console.log('当前用户分数不大于云端分数，不必上传')
-          return
+        if (res.KVDataList.length > 0) { // 如果云端已有分数，先比较（否则直接上传）
+          cloudScore = parseInt(res.KVDataList[0].value, 10)
+          if (score <= cloudScore) {
+            console.log('当前用户分数不大于云端分数，不必上传')
+            return
+          }
         }
+
         wx.setUserCloudStorage({
           KVDataList: [
             { key: 'maxScore', value: String(score) }
@@ -91,8 +94,75 @@ cc.Class({
       return
     }
     this.rankingScrollView.node.active = true
-    this.initUserInfo()
-    this.initFriendInfo()
+
+    // 接口废弃：为了将当前用户加入排行榜，需要手动处理
+    // this.initUserInfo()
+    // this.initFriendInfo()
+
+    wx.getUserInfo({
+      openIdList: ['selfOpenId'],
+      lang: 'zh_CN',
+      success: (res) => {
+        this.loadingLabel.active = false
+        const myData = res.data[0]
+        // this.createUserBlock('user', res.data[0])
+        console.log('当前用户信息获取成功', res.data[0])
+        wx.getFriendCloudStorage({
+          success: (res) => {
+            const friendData = res.data
+            if (friendData.length > 0) {
+              console.log(`玩过这个游戏的好友还有：${friendData[0].nickname}等${friendData.length}人`)
+            }
+
+            // 传入自己的数据，一同加入排名
+            let myKVDataList = []
+            wx.getUserCloudStorage({ // OpenDataContext-wx.getUserInfo不包含用户分数，需要单独获取
+              keyList: ['maxScore'],
+              success: res => {
+                myKVDataList = res.KVDataList
+              }
+            })
+            friendData.push({
+              avatarUrl: myData.avatarUrl,
+              nickname: myData.nickName,
+              KVDataList: myKVDataList
+            })
+
+            // 加入一些自定义的样例数据
+            friendData.push({
+              nickname: '王二麻子',
+              KVDataList: [
+                { key: 'maxScore', value: '8' }
+              ]
+            })
+            friendData.push({
+              nickname: '李四',
+              KVDataList: [
+                { key: 'maxScore', value: '123' }
+              ]
+            })
+            friendData.push({
+              nickname: '张三',
+              KVDataList: [
+                { key: 'maxScore', value: '666' }
+              ]
+            })
+
+            // 把用户所有好友的分数降序重新排列后依次绘制
+            this.scoreSort(friendData)
+            for (let i = 0; i < friendData.length; i++) {
+              this.createUserBlock(i, friendData[i]) // 这里的i+1就是排名
+            }
+          },
+          fail: (res) => {
+            console.error(res)
+          }
+        })
+      },
+      fail: (res) => {
+        console.error(res)
+      }
+    })
   },
 
   initUserInfo () {
@@ -113,11 +183,35 @@ cc.Class({
   initFriendInfo () {
     wx.getFriendCloudStorage({
       success: (res) => {
-        console.log(`玩过这个游戏的好友还有：${res.data[0].nickname}等${res.data.length}人`)
-        // todo: 当前未按照分数排名
-        // todo: 把用户和用户所有好友的分数降序重新排列后依次绘制
-        for (let i = 0; i < res.data.length; ++i) {
-          this.createUserBlock(res.data[i])
+        const friendData = res.data
+        if (friendData.length > 0) {
+          console.log(`玩过这个游戏的好友还有：${friendData[0].nickname}等${friendData.length}人`)
+        }
+
+        // 加入一些自定义的样例数据
+        friendData.push({
+          nickname: '王二麻子',
+          KVDataList: [
+            { key: 'maxScore', value: '8' }
+          ]
+        })
+        friendData.push({
+          nickname: '李四',
+          KVDataList: [
+            { key: 'maxScore', value: '123' }
+          ]
+        })
+        friendData.push({
+          nickname: '张三',
+          KVDataList: [
+            { key: 'maxScore', value: '666' }
+          ]
+        })
+
+        // 把用户所有好友的分数降序重新排列后依次绘制
+        this.scoreSort(friendData)
+        for (let i = 0; i < friendData.length; i++) {
+          this.createUserBlock(i, friendData[i]) // 这里的i+1就是排名
         }
       },
       fail: (res) => {
@@ -138,47 +232,60 @@ cc.Class({
     userName.string = tempName.length <= 6 ? tempName : tempName.substr(0, 6) + '...'
 
     // set avatar
-    cc.loader.load({ url: user.avatarUrl, type: 'png' }, (err, texture) => {
-      if (err) {
-        console.error(err)
-      }
-      const userIcon = node.getChildByName('avatarImgSprite').getComponent(cc.Sprite)
-      userIcon.spriteFrame = new cc.SpriteFrame(texture)
-    })
+    if (user.avatarUrl) {
+      cc.loader.load({ url: user.avatarUrl, type: 'png' }, (err, texture) => {
+        if (err) {
+          console.error(err)
+        }
+        const userIcon = node.getChildByName('avatarImgSprite').getComponent(cc.Sprite)
+        userIcon.spriteFrame = new cc.SpriteFrame(texture)
+      })
+    }
 
     // set rank
     const userRank = node.getChildByName('rankLabel').getComponent(cc.Label)
-    if (rank === 0) {
-      node.getChildByName('rankLabel').setScale(2)
-    } else if (rank === 1) {
-      node.getChildByName('rankLabel').setScale(1.6)
-    } else if (rank === 2) {
-      node.getChildByName('rankLabel').setScale(1.3)
+    if (rank === 'user') {
+      userRank.string = 'me'
+    } else {
+      if (rank === 0) {
+        node.getChildByName('rankLabel').setScale(2)
+      } else if (rank === 1) {
+        node.getChildByName('rankLabel').setScale(1.6)
+      } else if (rank === 2) {
+        node.getChildByName('rankLabel').setScale(1.3)
+      }
+      userRank.string = (rank + 1).toString()
     }
-    // todo: 处理共同加入排名的情况
-    // userRank.string = (rank + 1).toString()
 
     // set score
     const userScore = node.getChildByName('topScoreLabel').getComponent(cc.Label)
     if (rank === 'user') {
-      wx.getUserCloudStorage({
+      wx.getUserCloudStorage({ // OpenDataContext-wx.getUserInfo不包含用户分数，需要单独获取
         keyList: ['maxScore'],
         success: res => {
-          // todo: 访问方式存在问题：如果云端没有存储的话就用本地数据
-          userScore.string = res.KVDataList[0].value
+          if (res.KVDataList.length > 0) { // 有云端分数就用云端分数和本地分数中最大值
+            const cloudScore = parseInt(res.KVDataList[0].value, 10)
+            userScore.string = (cloudScore > this.localMaxScore) ? cloudScore : this.localMaxScore
+          } else { // 否则就用本地分数
+            userScore.string = this.localMaxScore ? this.localMaxScore.toString() : '0'
+          }
         },
         fail: function () {
           console.log('获取用户云端分数记录失败')
-          userScore.string = window.score ? window.score : '0'
+          userScore.string = this.localMaxScore ? this.localMaxScore.toString() : '0'
         }
       })
     } else {
-      userScore.string = user.KVDataList[0].value
+      if (user.KVDataList.length > 0) {
+        userScore.string = user.KVDataList[0].value
+      } else { // 如果有好友玩过但是没有上传分数，则默认记为0分
+        userScore.string = 0
+      }
     }
   },
 
-  scoreSort (scores) {
-    scores.sort((a, b) => {
+  scoreSort (data) {
+    data.sort((a, b) => {
       if (a.KVDataList.length === 0 && b.KVDataList.length === 0) {
         return 0
       }
@@ -188,7 +295,7 @@ cc.Class({
       if (b.KVDataList.length === 0) {
         return -1
       }
-      return b.KVDataList[0].value - a.KVDataList[0].value
+      return parseInt(b.KVDataList[0].value) - parseInt(a.KVDataList[0].value)
     })
   },
 

@@ -30,8 +30,7 @@ cc.Class({
     scoreDisplay: {
       default: null,
       type: cc.RichText
-    }
-    ,
+    },
     maxLocalScore: 0
     // foo: {
     //     // ATTRIBUTES:
@@ -52,7 +51,7 @@ cc.Class({
 
   // LIFE-CYCLE CALLBACKS:
 
-  onLoad() {
+  onLoad () {
     this.maxX = this.node.width / 2
     this.maxY = this.node.height / 2
     this.restartButton.on(cc.Node.EventType.TOUCH_END, function (event) {
@@ -61,36 +60,34 @@ cc.Class({
     this.menuButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('start')
     })
-    },
+  },
 
-  start() {
+  start () {
     this.bg.setContentSize(2 * this.maxX, 2 * this.maxY)
     var score = window.score
-    window.reviveNumber=0
-    window.hatNumber=0
-    window.rocketNumber=0
+    window.reviveNumber = 0
+    window.hatNumber = 0
+    window.rocketNumber = 0
     wx.setStorageSync('reviveNumber', `${0}`)
 
     wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
     wx.setStorageSync('hatNumber', `${window.hatNumber}`)
     wx.setStorageSync('money', `${window.money + 30}`)
-    
-    this.maxLocalScore=wx.getStorageSync('maxlocalscore')
-    if (this.maxLocalScore==='')
-    this.maxLocalScore=0
-   
-      if (window.score > this.maxLocalScore) {
-        this.maxLocalScore = window.score
-        wx.setStorageSync('maxlocalscore', `${window.score}`)
-        wx.postMessage({
-          command: 'upload', // 上传分数
-          score: window.score
-        })
-      }
-    
-    
-      this.scoreDisplay.string = '<color=#222222>Your score:  ' + parseInt(score) + '</n>'
+
+    this.maxLocalScore = wx.getStorageSync('maxlocalscore')
+    if (this.maxLocalScore === '') { this.maxLocalScore = 0 }
+
+    if (window.score > this.maxLocalScore) {
+      this.maxLocalScore = window.score
+      wx.setStorageSync('maxlocalscore', `${window.score}`)
+      wx.postMessage({
+        command: 'upload', // 上传分数
+        score: window.score
+      })
     }
 
-    // update (dt) {},
-  })
+    this.scoreDisplay.string = '<color=#222222>Your score:  ' + parseInt(score) + '</n>'
+  }
+
+  // update (dt) {},
+})

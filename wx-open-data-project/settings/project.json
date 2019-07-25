@@ -7,7 +7,17 @@
   ],
   "design-resolution-height": 640,
   "design-resolution-width": 960,
-  "excluded-modules": [],
+  "excluded-modules": [
+    "DragonBones",
+    "Dynamic Atlas",
+    "EditBox",
+    "MotionStreak",
+    "ParticleSystem",
+    "Renderer Texture",
+    "RichText",
+    "Spine Skeleton",
+    "TiledMap"
+  ],
   "facebook": {
     "appID": "",
     "audience": {
