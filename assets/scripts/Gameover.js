@@ -65,6 +65,12 @@ cc.Class({
   start () {
     this.bg.setContentSize(2 * this.maxX, 2 * this.maxY)
     var score = window.score
+    wx.setStorageSync('reviveNumber', `${0}`)
+  
+    wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
+    wx.setStorageSync('hatNumber', `${window.hatNumber}`)
+
+
     window.shouldUpdateScore = true
     this.scoreDisplay.string = '<color=#222222>Your score:  ' + parseInt(score) + '</n>'
   }

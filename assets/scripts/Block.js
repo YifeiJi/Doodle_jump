@@ -2,8 +2,7 @@ cc.Class({
     extends: cc.Component,
     
     properties: {
-        // 星星和主角之间的距离小于这个数值时，就会完成收集
-
+  
 
         Radius: 15,
         setspeed: 0,
@@ -150,10 +149,10 @@ touched_bed:function() {
 
 
     update: function (dt) {
-        // 每帧判断和主角之间的距离是否小于收集距离
+      
         //if (this.game.player.getComponent('Player').normal===true) this.speedy=0;
         if (-this.game.getComponent('Game').maxY> this.node.y+this.node.height) {
-            // 调用收集行为
+           
             //if (this.originy>this.game.getComponent('Game').line) 
             //this.game.getComponent('Game').line=this.originy;
             this.node.destroy();

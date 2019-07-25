@@ -15,9 +15,7 @@ cc.Class({
 
         timer:0,
         jumpHeight: 0,
-        // 主角跳跃持续时间
         jumpDuration: 0,
-        // 最大移动速度
         maxMoveSpeed: 0,
         speedx: 0,
         speedy: 0,
@@ -154,16 +152,19 @@ return;
 
     set_low_sensibility:function()
     {
-        this.sensibility=20;
+        console.log('sen_low')
+        this.sensibility=5;
     },
 
     set_medium_sensibility:function()
     {
-        this.sensibility=60;
+        console.log('sen_medium')
+        this.sensibility=15;
     },
     set_high_sensibility:function()
     {
-        this.sensibility=100;
+        console.log('sen_high')
+        this.sensibility=25;
     },
   
 
@@ -219,6 +220,7 @@ return;
             {
                 cc.director.loadScene('gameover');
                 window.score=this.game.getComponent('Game').score;
+                return;
             }
             this.node.x=this.node.x+this.speedx*dt;
             this.node.y=this.node.y+this.speedy*dt;
@@ -259,6 +261,7 @@ return;
             {
                 cc.director.loadScene('gameover');
                 window.score=this.game.getComponent('Game').score;
+                return;
             }
             return;
         }
@@ -277,8 +280,8 @@ return;
 
         if (this.accRight) { this.speedx = 80; }
 
-*/
 
+*/
         var self = this;
 
 

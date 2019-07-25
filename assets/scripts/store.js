@@ -54,7 +54,7 @@ cc.Class({
      * 开局可购买如下道具
      * 竹蜻蜓、喷气火箭、复活道具
      */
-    this.readLocalWXStorage()
+    //this.readLocalWXStorage()
 
     this.moneyText.string = `money: ${window.money}`
     this.homeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
@@ -84,49 +84,11 @@ cc.Class({
         wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
       }
     }, this.resurrect)
+
+
   },
 
-  readLocalWXStorage: function () {
-    // 从本地读取剩余金钱
-    const money = wx.getStorageSync('money')
-    if (money === '') {
-      window.money = 10000 // 如果未定义，则初始化
-      console.log('本地微信 money 缓存数据为空。')
-      wx.setStorageSync('money', `${window.money}`)
-    } else {
-      window.money = parseInt(money, 10)
-    }
-
-    // 从本地读取剩余rocketNumber
-    const rocketNumber = wx.getStorageSync('rocketNumber')
-    if (rocketNumber === '') {
-      window.rocketNumber = 0 // 如果未定义，则初始化
-      console.log('本地微信 rocketNumber 缓存数据为空。')
-      wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
-    } else {
-      window.rocketNumber = parseInt(rocketNumber, 10)
-    }
-
-    // 从本地读取剩余hatNumber
-    const hatNumber = wx.getStorageSync('hatNumber')
-    if (hatNumber === '') {
-      window.hatNumber = 0 // 如果未定义，则初始化
-      console.log('本地微信 hatNumber 缓存数据为空。')
-      wx.setStorageSync('hatNumber', `${window.hatNumber}`)
-    } else {
-      window.hatNumber = parseInt(hatNumber, 10)
-    }
-
-    // 从本地读取剩余reviveNumber
-    const reviveNumber = wx.getStorageSync('reviveNumber')
-    if (reviveNumber === '') {
-      window.reviveNumber = 0 // 如果未定义，则初始化
-      console.log('本地微信 reviveNumber 缓存数据为空。')
-      wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
-    } else {
-      window.reviveNumber = parseInt(reviveNumber, 10)
-    }
-  },
+  
 
   start () {
 

@@ -112,7 +112,7 @@ cc.Class({
 
     onLoad: function () {
         // 初始化计时器
-        //this.load_subpackage();
+      
         this.timer = 0;
         this.maxX = this.node.width / 2;
         this.maxY = this.node.height / 2;
@@ -166,37 +166,13 @@ cc.Class({
         this.pausebutton.node.on(cc.Node.EventType.TOUCH_START, this.resume, this);
 
     },
-    produce_player: function () {
-        var newplayer = cc.instantiate(this.playerfab);
-        newplayer.getComponent('Player').sound = window.sound;
-        newplayer.getComponent('Player').restart = window.restart;
-        newplayer.getComponent('Player').pic = player_type;
-
-        if (window.sensibility === 'low')
-            newplayer.getComponent('Player').set_low_sensibility;
-       
-        else if (window.sensibility === 'high')
-            newplayer.getComponent('Player').set_high_sensibility;
-            else 
-            newplayer.getComponent('Player').set_medium_sensibility;
-
-        this.node.addChild(newplayer, 2);
-        newplayer.setPosition(30, -this.maxY * 0.6 + 60, 10000);
-        newplayer.getComponent('Player').game = this;
-        if (window.start_with_rocket === true) {
-            newplayer.getComponent('Player').onrocket = true;
-            newplayer.getComponent('Player').setSpeedy(1400);
-            newplayer.getComponent('Player').play_rocketsound();
-        }
-        this.player = newplayer;
-        this.player.getComponent('Player').bubble = this.bubble;
-
-
-    },
+    
     set_level: function () {
 
         var player = this.player;
-       
+        if(window.level===undefined)
+        window.level='easy'; 
+       console.log(window.level)
         if (window.level === 'easy') {
             this.interval = this.interval_easy;
             this.param_basic = 0.3;
@@ -254,9 +230,10 @@ cc.Class({
 
 
 
-        // window.player_type = 'winter';
+         //window.player_type = 'winter';
         //window.start_with_rocket = true;
-        window.restart = 0;
+        //window.reviveNumber = 100;
+        
         //window.level = 'hard';
         this.scroll.zIndex = -1;
         this.bg.zIndex = -1;
@@ -283,21 +260,48 @@ cc.Class({
         //this.pausebutton.node.on(cc.Node.EventType.TOUCH_START,this.stop(),this);
         this.pausebutton.node.on(cc.Node.EventType.TOUCH_START, this.pause, this);
         var player_type = window.player_type;
-        //var player_type='winter';
+       
         //player_type='winter';
         //this.produce_player();
 
         var newplayer = cc.instantiate(this.playerfab);
         newplayer.getComponent('Player').sound = window.sound;
-        newplayer.getComponent('Player').restart = window.restart;
+        if (window.reviveNumber===undefined)
+        window.reviveNumber=0
+        newplayer.getComponent('Player').restart = window.reviveNumber;//window.restart;
+        
+        window.rocketNumber=0
+        window.hatNumber=0
+        console.log(window.rocketNumber)
+        console.log(window.hatNumber)
+        
+        if (window.rocketNumber>0)
+        {
+            window.rocketNumber=window.rocketNumber-1;
+            window.start_with_rocket=true;
+
+        } else 
+        if (window.hatNumber>0)
+        {
+            window.hatNumber=window.hatNumber-1;
+            window.start_with_hat=true;
+
+        }
+        //wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
+        //wx.setStorageSync('hatNumber', `${window.hatNumber}`)
+
         newplayer.getComponent('Player').pic = player_type;
 
+        if (window.sensibility === undefined)
+        window.sensibility='medium';
+        console.log('sen')
+        console.log(window.sensibility)
         if (window.sensibility === 'low')
-            newplayer.getComponent('Player').set_low_sensibility;
+            newplayer.getComponent('Player').set_low_sensibility();
         else if (window.sensibility === 'medium')
-            newplayer.getComponent('Player').set_medium_sensibility;
+            newplayer.getComponent('Player').set_medium_sensibility();
         else if (window.sensibility === 'high')
-            newplayer.getComponent('Player').set_high_sensibility;
+            newplayer.getComponent('Player').set_high_sensibility();
 
         this.node.addChild(newplayer, 2);
         newplayer.setPosition(30, -this.maxY * 0.6 + 100, 10000);
@@ -306,6 +310,11 @@ cc.Class({
             newplayer.getComponent('Player').onrocket = true;
             newplayer.getComponent('Player').setSpeedy(1400);
             newplayer.getComponent('Player').play_rocketsound();
+        }
+        if (window.start_with_hat === true) {
+            newplayer.getComponent('Player').onhat = true;
+            newplayer.getComponent('Player').setSpeedy(350);
+            newplayer.getComponent('Player').play_hatsound();
         }
         this.player = newplayer;
         this.player.getComponent('Player').bubble = this.bubble;
@@ -363,8 +372,8 @@ cc.Class({
 
 
             randx = (Math.random() - 0.5) * 2 * 0.9 * this.maxX;
-            if (Math.random() > 0.6) randy = y + Math.random() * this.interval + this.interval; else
-            {var delta=this.interval *  Math.random()*2;
+            if (Math.random() > 0.6) randy = y + Math.random() * this.interval + this.interval+15; else
+            {var delta=this.interval *  Math.random()+40;
                 if (delta<this.interval) delta=this.interval;
                 randy = y +delta;
             }
@@ -531,7 +540,7 @@ cc.Class({
             y = randy;
 
 
-            if ((Math.random() > this.param_monster) && (this.maxBlockHeight > 10 * this.maxY)) {
+            if ((Math.random() >this.param_monster) && (this.maxBlockHeight > 10 * this.maxY)) {
 
 
                 randx = (Math.random() - 0.5) * 2 * 0.9 * this.maxX;
@@ -611,8 +620,7 @@ cc.Class({
         },
 */
     update: function (dt) {
-        // 每帧更新计时器，超过限度还没有生成新的星星
-        // 就会调用游戏失败逻辑
+    
         if (this.player.getComponent('Player').fall === false) {
             this.speed = 0;//-(this.player.y)/1000;
             if (this.player.y > 0)

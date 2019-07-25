@@ -50,6 +50,12 @@ cc.Class({
         return console.error(err)
       }
     })
+    cc.loader.downloader.loadSubpackage('game', function (err) {
+      if (err) {
+        return console.error(err)
+      }
+    })
+
 
     cc.loader.downloader.loadSubpackage('player', function (err) {
       if (err) {
@@ -61,16 +67,74 @@ cc.Class({
         return console.error(err)
       }
     })
+    cc.loader.downloader.loadSubpackage('store', function (err) {
+      if (err) {
+        return console.error(err)
+      }
+    })
+    cc.loader.downloader.loadSubpackage('highScores', function (err) {
+      if (err) {
+        return console.error(err)
+      }
+    })
   },
 
   // LIFE-CYCLE CALLBACKS:
 
+
+  readLocalWXStorage: function () {
+    // 从本地读取剩余金钱
+    const money = wx.getStorageSync('money')
+    if (money === '') {
+      window.money = 10000 // 如果未定义，则初始化
+      console.log('本地微信 money 缓存数据为空。')
+      wx.setStorageSync('money', `${window.money}`)
+    } else {
+      window.money = parseInt(money, 10)
+    }
+
+    // 从本地读取剩余rocketNumber
+    const rocketNumber = wx.getStorageSync('rocketNumber')
+    if (rocketNumber === '') {
+      window.rocketNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 rocketNumber 缓存数据为空。')
+      wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
+    } else {
+      window.rocketNumber = parseInt(rocketNumber, 10)
+    }
+
+    // 从本地读取剩余hatNumber
+    const hatNumber = wx.getStorageSync('hatNumber')
+    if (hatNumber === '') {
+      window.hatNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 hatNumber 缓存数据为空。')
+      wx.setStorageSync('hatNumber', `${window.hatNumber}`)
+    } else {
+      window.hatNumber = parseInt(hatNumber, 10)
+    }
+
+    // 从本地读取剩余reviveNumber
+    const reviveNumber = wx.getStorageSync('reviveNumber')
+    if (reviveNumber === '') {
+      window.reviveNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 reviveNumber 缓存数据为空。')
+      wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
+    } else {
+      window.reviveNumber = parseInt(reviveNumber, 10)
+    }
+  },
   onLoad: function () {
-    // this.load_subpackage();
+    
+    if (window.loaded!==true)
+{
+       this.load_subpackage();
+       window.loaded=true;
+}
     // todo: 美化按钮点击后效果
-    window.player_type = 'jungle' // 游戏地图初始化
+    window.player_type = 'default' // 游戏地图初始化
     // 设置适配模式
     
+    this.background.setContentSize(this.node.width,this.node.height)
     cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
     // window.level = 'easy'
     // window.sensibility = 'medium'
@@ -123,6 +187,7 @@ cc.Class({
 
   start () {
     this.initUserInfoButton()
+    this.readLocalWXStorage()
   },
 
   initUserInfoButton () {
@@ -167,6 +232,7 @@ cc.Class({
   },
 
   update (dt) {
+    /*
     if (window.shouldUpdateScore) {
       if (window.score > this.maxLocalScore) {
         this.maxLocalScore = window.score
@@ -175,7 +241,7 @@ cc.Class({
           score: window.score
         })
       }
-    }
+    }*/
     window.shouldUpdateScore = false
   }
 })

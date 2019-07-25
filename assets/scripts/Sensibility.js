@@ -24,6 +24,11 @@ cc.Class({
         this.toggle_2.isChecked=true;
         else  if (window.sensibility==='low')
         this.toggle_3.isChecked=true;
+        else  
+        {
+            this.toggle_2.isChecked=true;
+            window.sensibility='medium'
+        }
         //node.on('toggle', this.callback, this);
      },
 

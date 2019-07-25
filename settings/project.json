@@ -8,8 +8,6 @@
   "design-resolution-height": 1280,
   "design-resolution-width": 640,
   "excluded-modules": [
-    "ParticleSystem",
-    "TiledMap",
     "Spine Skeleton",
     "DragonBones",
     "ProgressBar",
@@ -17,10 +15,14 @@
     "ScrollView",
     "PageView",
     "PageViewIndicator",
-    "Layout",
+    "Slider",
     "EditBox",
     "VideoPlayer",
-    "Physics"
+    "WebView",
+    "Collider",
+    "Physics",
+    "NodePool",
+    "StudioComponent"
   ],
   "facebook": {
     "appID": "",
@@ -44,6 +46,5 @@
     "width": 960
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }
