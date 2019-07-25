@@ -27,74 +27,121 @@ cc.Class({
       type: cc.Label
     },
 
-    rocket: {
+    initialGearPurchase: {
       default: null,
       type: cc.Node
     },
 
-    hat: {
+    resurrectPurchase: {
       default: null,
       type: cc.Node
     },
 
-    resurrect: {
+    resurrectNumberLabel: {
       default: null,
-      type: cc.Node
+      type: cc.Label
     }
   },
 
   // LIFE-CYCLE CALLBACKS:
 
   onLoad () {
-    // todo: 美化商店界面按钮
-    // todo: 显示当前购买的道具数量
-    // todo: Hat和Rocket不能同时购买（且最多只能买一个）（可以参照options）
     this.background.setContentSize(this.node.width, this.node.height)
     /*
      * 开局可购买如下道具
      * 竹蜻蜓、喷气火箭、复活道具
      */
-    //this.readLocalWXStorage()
+    this.readLocalWXStorage()
+    this.init() // 根据当前道具情况更新页面
 
     this.moneyText.string = `money: ${window.money}`
     this.homeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('start')
     }, this.homeButton)
-    this.rocket.on(cc.Node.EventType.TOUCH_END, function (event) {
-      if (window.money >= 200) {
-        window.money -= 200
-        window.rocketNumber++
-        wx.setStorageSync('money', `${window.money}`)
-        wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
+
+    this.initialGearPurchase.on(cc.Node.EventType.TOUCH_END, function (event) {
+      if (!this.getComponent(cc.Button).interactable) {
+        console.log('当前已有初始道具，无法再购买。')
+        console.log(`window.hatNumber = ${window.hatNumber}`, `window.rocketNumber = ${window.rocketNumber}`)
+        return // 只能拥有一件起始道具
       }
-    }, this.rocket)
-    this.hat.on(cc.Node.EventType.TOUCH_END, function (event) {
-      if (window.money >= 100) {
-        window.money -= 100
-        window.hatNumber++
-        wx.setStorageSync('money', `${window.money}`)
-        wx.setStorageSync('hatNumber', `${window.hatNumber}`)
+
+      const toggle = this.getChildByName('bornToggleContainer')
+      if (toggle.getChildByName('hatButton').getComponent(cc.Toggle).isChecked) {
+        if (window.money >= 100) {
+          console.log('购买hat成功')
+          window.money -= 100
+          window.hatNumber++
+          this.getComponent(cc.Button).interactable = false
+          wx.setStorageSync('money', `${window.money}`)
+          wx.setStorageSync('hatNumber', `${window.hatNumber}`)
+        }
+      } else if (toggle.getChildByName('rocketButton').getComponent(cc.Toggle).isChecked) {
+        if (window.money >= 200) {
+          console.log('购买rocket')
+          window.money -= 200
+          window.rocketNumber++
+          this.getComponent(cc.Button).interactable = false
+          wx.setStorageSync('money', `${window.money}`)
+          wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
+        }
       }
-    }, this.hat)
-    this.resurrect.on(cc.Node.EventType.TOUCH_END, function (event) {
+    }, this.initialGearPurchase)
+
+    this.resurrectPurchase.on(cc.Node.EventType.TOUCH_END, function (event) {
       if (window.money >= 500) {
         window.money -= 500
         window.reviveNumber++
         wx.setStorageSync('money', `${window.money}`)
         wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
       }
-    }, this.resurrect)
+    }, this.resurrectPurchase)
+  },
+
+  readLocalWXStorage: function () {
+    // 从本地读取剩余金钱
+    const money = wx.getStorageSync('money')
+    if (money === '') {
+      window.money = 10000 // 如果未定义，则初始化
+      console.log('本地微信 money 缓存数据为空。')
+      wx.setStorageSync('money', `${window.money}`)
+    } else {
+      window.money = parseInt(money, 10)
+    }
+
+    // 从本地读取剩余rocketNumber
+    const rocketNumber = wx.getStorageSync('rocketNumber')
+    if (rocketNumber === '') {
+      window.rocketNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 rocketNumber 缓存数据为空。')
+      wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
+    } else {
+      window.rocketNumber = parseInt(rocketNumber, 10)
+    }
 
 
   },
 
-  
+  init () {
+    const toggle = this.initialGearPurchase.getChildByName('bornToggleContainer')
+    if (window.hatNumber > 0) {
+      this.initialGearPurchase.getComponent(cc.Button).interactable = false
+      toggle.getChildByName('hatButton').getComponent(cc.Toggle).isChecked = true
+    } else if (window.rocketNumber > 0) {
+      this.initialGearPurchase.getComponent(cc.Button).interactable = false
+      toggle.getChildByName('rocketButton').getComponent(cc.Toggle).isChecked = true
+    } else {
+      this.initialGearPurchase.getComponent(cc.Button).interactable = true
+      toggle.getChildByName('nullButton').getComponent(cc.Toggle).isChecked = true
+    }
+  },
 
   start () {
 
   },
 
   update (dt) {
-    this.moneyText.string = `money: ${window.money}`
+    this.moneyText.string = `Balance: ${window.money}`
+    this.resurrectNumberLabel.string = `Now you have: ${window.reviveNumber}`
   }
 })

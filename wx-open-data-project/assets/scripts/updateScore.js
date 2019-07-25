@@ -85,6 +85,11 @@ cc.Class({
 
   // 绘制排行榜
   drawRankingList () {
+    // 由于微信小游戏内存回收机制存在严重问题，因此需要检测之前生成的prefab是否已被销毁
+    if (this.scrollViewContent.children.length) {
+      console.log('当前存在未回收的prefab，排行榜不再重新绘制', this.scrollViewContent.children)
+      return
+    }
     this.rankingScrollView.node.active = true
     this.initUserInfo()
     this.initFriendInfo()
@@ -159,6 +164,7 @@ cc.Class({
       wx.getUserCloudStorage({
         keyList: ['maxScore'],
         success: res => {
+          // todo: 访问方式存在问题：如果云端没有存储的话就用本地数据
           userScore.string = res.KVDataList[0].value
         },
         fail: function () {
@@ -184,6 +190,11 @@ cc.Class({
       }
       return b.KVDataList[0].value - a.KVDataList[0].value
     })
+  },
+
+  onDestroy () {
+    this.scrollViewContent.removeAllChildren()
+    wx.triggerGC()
   }
 
   // update (dt) {},
