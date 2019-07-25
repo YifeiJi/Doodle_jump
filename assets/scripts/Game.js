@@ -7,6 +7,10 @@ cc.Class({
             default: null,
             type: cc.Label
         },
+        lifeDisplay: {
+            default: null,
+            type: cc.Label
+        },
         pausebutton: {
             default: null,
             type: cc.Button
@@ -106,7 +110,6 @@ cc.Class({
         speed_block: 0,
         acc_block: 1,
         score: 0
-
     },
   
 
@@ -270,17 +273,22 @@ cc.Class({
         window.reviveNumber=0
         newplayer.getComponent('Player').restart = window.reviveNumber;//window.restart;
         
-        window.rocketNumber=0
-        window.hatNumber=0
-        console.log(window.rocketNumber)
         console.log(window.hatNumber)
+        console.log(window.rocketNumber)
+
+        if (window.rocketNumber===undefined)
+        window.rocketNumber=0
+
+        if (window.hatNumber===undefined)
+        window.hatNumber=0
         
+
         if (window.rocketNumber>0)
         {
             window.rocketNumber=window.rocketNumber-1;
             window.start_with_rocket=true;
 
-        } else 
+        } 
         if (window.hatNumber>0)
         {
             window.hatNumber=window.hatNumber-1;
@@ -294,8 +302,8 @@ cc.Class({
 
         if (window.sensibility === undefined)
         window.sensibility='medium';
-        console.log('sen')
-        console.log(window.sensibility)
+        //console.log('sen')
+        //console.log(window.sensibility)
         if (window.sensibility === 'low')
             newplayer.getComponent('Player').set_low_sensibility();
         else if (window.sensibility === 'medium')
@@ -645,6 +653,8 @@ cc.Class({
             if ((this.line + this.maxY) / 10 > this.score)
                 this.score = parseInt(this.line + this.maxY) / 10;
             this.scoreDisplay.string = 'Score: ' + parseInt(this.score);
+            var life=this.player.getComponent('Player').restart;
+            this.lifeDisplay.string = 'Revive: ' + parseInt(life);
         }
 
     },

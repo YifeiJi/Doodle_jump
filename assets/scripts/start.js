@@ -41,7 +41,7 @@ cc.Class({
       type: cc.Node
     },
 
-    maxLocalScore: 0
+   
   },
 
   load_subpackage: function () {
@@ -86,42 +86,13 @@ cc.Class({
     // 从本地读取剩余金钱
     const money = wx.getStorageSync('money')
     if (money === '') {
-      window.money = 10000 // 如果未定义，则初始化
+      window.money = 1000 // 如果未定义，则初始化
       console.log('本地微信 money 缓存数据为空。')
       wx.setStorageSync('money', `${window.money}`)
     } else {
       window.money = parseInt(money, 10)
     }
 
-    // 从本地读取剩余rocketNumber
-    const rocketNumber = wx.getStorageSync('rocketNumber')
-    if (rocketNumber === '') {
-      window.rocketNumber = 0 // 如果未定义，则初始化
-      console.log('本地微信 rocketNumber 缓存数据为空。')
-      wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
-    } else {
-      window.rocketNumber = parseInt(rocketNumber, 10)
-    }
-
-    // 从本地读取剩余hatNumber
-    const hatNumber = wx.getStorageSync('hatNumber')
-    if (hatNumber === '') {
-      window.hatNumber = 0 // 如果未定义，则初始化
-      console.log('本地微信 hatNumber 缓存数据为空。')
-      wx.setStorageSync('hatNumber', `${window.hatNumber}`)
-    } else {
-      window.hatNumber = parseInt(hatNumber, 10)
-    }
-
-    // 从本地读取剩余reviveNumber
-    const reviveNumber = wx.getStorageSync('reviveNumber')
-    if (reviveNumber === '') {
-      window.reviveNumber = 0 // 如果未定义，则初始化
-      console.log('本地微信 reviveNumber 缓存数据为空。')
-      wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
-    } else {
-      window.reviveNumber = parseInt(reviveNumber, 10)
-    }
   },
   onLoad: function () {
     
@@ -135,6 +106,8 @@ cc.Class({
     // 设置适配模式
     
     this.background.setContentSize(this.node.width,this.node.height)
+    this.modeChoose.setContentSize(this.node.width*4,120)
+    this.modeChoose.x=-this.node.width*0.5
     cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
     // window.level = 'easy'
     // window.sensibility = 'medium'
@@ -148,28 +121,37 @@ cc.Class({
       event.stopPropagation()
     }, this.scoreButton)
     // cc.game.addPersistRootNode(this.node)
-
+    var self=this
     this.modeChoose.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
       this.opacity = 200 // 反馈效果：拖动物体时变透明
       const delta = event.getDelta()
-      if (this.x + delta.x > 320 && this.x + delta.x < 2240) {
+      if ((this.x + delta.x >=-self.node.width*4.5) && (this.x + delta.x < -self.node.width*0.5))
+       {
         this.x += delta.x
+        if (Math.abs(this.x+self.node.width*3.5)<=40) this.x=-self.node.width*3.5
+        if (Math.abs(this.x+self.node.width*2.5)<=40) this.x=-self.node.width*2.5
+        if (Math.abs(this.x+self.node.width*1.5)<=40) this.x=-self.node.width*1.5
+        if (Math.abs(this.x+self.node.width*0.5)<=40) this.x=-self.node.width*0.5
+        
       }
       event.stopPropagation()
     }, this.modeChoose)
 
+    
     this.modeChoose.on(cc.Node.EventType.TOUCH_END, function (event) {
       this.opacity = 255 // 不再拖动时复原
       const pos = this.x // 更新游戏地图
       // todo: 自动移动并对齐到当前地图
-      if (pos <= 640) {
+      //var position=pos/this.node.width;
+
+      if (pos <= -self.node.width*3.5) {
         window.player_type = 'underwater'
-      } else if (pos >= 1920) {
-        window.player_type = 'default'
-      } else if (pos <= 1280) {
+      } else if (pos <= -self.node.width*2.5) {
         window.player_type = 'jungle'
-      } else {
+      } else if (pos <=-self.node.width*1.5) {
         window.player_type = 'winter'
+      } else {
+        window.player_type = 'default'
       }
       // console.log(`Game background switched to ${window.player_type}.`)
       event.stopPropagation()
@@ -178,7 +160,7 @@ cc.Class({
     this.storeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('store')
     }, this.storeButton)
-
+    this.x=this.x+this.node.width
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('highScores')
       event.stopPropagation()
@@ -186,8 +168,8 @@ cc.Class({
   },
 
   start () {
-    this.initUserInfoButton()
-    this.readLocalWXStorage()
+    //this.initUserInfoButton()
+    //this.readLocalWXStorage()
   },
 
   initUserInfoButton () {

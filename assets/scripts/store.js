@@ -102,7 +102,7 @@ cc.Class({
     // 从本地读取剩余金钱
     const money = wx.getStorageSync('money')
     if (money === '') {
-      window.money = 10000 // 如果未定义，则初始化
+      window.money = 1000 // 如果未定义，则初始化
       console.log('本地微信 money 缓存数据为空。')
       wx.setStorageSync('money', `${window.money}`)
     } else {

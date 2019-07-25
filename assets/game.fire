@@ -18,6 +18,9 @@
       },
       {
         "__id__": 27
+      },
+      {
+        "__id__": 29
       }
     ],
     "_active": false,
@@ -44,8 +47,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
+      "x": 0.39375,
+      "y": 0.39375,
       "z": 1
     },
     "_quat": {
@@ -1124,6 +1127,9 @@
     "scoreDisplay": {
       "__id__": 26
     },
+    "lifeDisplay": {
+      "__id__": 28
+    },
     "pausebutton": {
       "__id__": 23
     },
@@ -1282,5 +1288,90 @@
     "_skewY": 0,
     "groupIndex": 0,
     "_id": "26rZ2Svc9ByK8TE1WOrQ3c"
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 29
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_string": "Score:",
+    "_N$string": "Score:",
+    "_fontSize": 40,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0,
+    "_N$cacheMode": 0,
+    "_id": "17tafipyFFr6Ck7ZTiTeh4"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "revive",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 1,
+    "_components": [
+      {
+        "__id__": 28
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 20,
+      "g": 17,
+      "b": 17,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 115.61,
+      "height": 40
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 50,
+      "y": 90,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "groupIndex": 0,
+    "_id": "des+KOoZdJKL4rMdaWiUva"
   }
 ]

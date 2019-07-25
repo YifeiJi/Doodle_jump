@@ -269,7 +269,7 @@ return;
 
 
         this.path = './player/' + this.pic;
-        this.timer += 1;
+        
         if ((this.onhat === false) && (this.onrocket === false)) this.speedy = this.speedy + this.accely * dt;
         this.speedy_2 = this.speedy_2 + this.acc_2 * dt;
         if (this.speedy_2 > 0) this.speedy_2 = 0;
