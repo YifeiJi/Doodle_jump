@@ -39,9 +39,8 @@ cc.Class({
     modeChoose: {
       default: null,
       type: cc.Node
-    },
+    }
 
-   
   },
 
   load_subpackage: function () {
@@ -55,7 +54,6 @@ cc.Class({
         return console.error(err)
       }
     })
-
 
     cc.loader.downloader.loadSubpackage('player', function (err) {
       if (err) {
@@ -81,7 +79,6 @@ cc.Class({
 
   // LIFE-CYCLE CALLBACKS:
 
-
   readLocalWXStorage: function () {
     // 从本地读取剩余金钱
     const money = wx.getStorageSync('money')
@@ -92,7 +89,6 @@ cc.Class({
     } else {
       window.money = parseInt(money, 10)
     }
-
   },
   getURL:function(url){
     url = cc.url.raw(url);
@@ -148,10 +144,10 @@ cc.Class({
     // todo: 美化按钮点击后效果
     window.player_type = 'default' // 游戏地图初始化
     // 设置适配模式
-    
-    this.background.setContentSize(this.node.width,this.node.height)
-    this.modeChoose.setContentSize(this.node.width*4,120)
-    this.modeChoose.x=-this.node.width*0.5
+
+    this.background.setContentSize(this.node.width, this.node.height)
+    this.modeChoose.setContentSize(this.node.width * 4, 120)
+    this.modeChoose.x = -this.node.width * 0.5
     cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
     // window.level = 'easy'
     // window.sensibility = 'medium'
@@ -165,34 +161,31 @@ cc.Class({
       event.stopPropagation()
     }, this.scoreButton)
     // cc.game.addPersistRootNode(this.node)
-    var self=this
+    var self = this
     this.modeChoose.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
       this.opacity = 200 // 反馈效果：拖动物体时变透明
       const delta = event.getDelta()
-      if ((this.x + delta.x >=-self.node.width*4.5) && (this.x + delta.x < -self.node.width*0.5))
-       {
+      if ((this.x + delta.x >= -self.node.width * 4.5) && (this.x + delta.x < -self.node.width * 0.5)) {
         this.x += delta.x
-        if (Math.abs(this.x+self.node.width*3.5)<=40) this.x=-self.node.width*3.5
-        if (Math.abs(this.x+self.node.width*2.5)<=40) this.x=-self.node.width*2.5
-        if (Math.abs(this.x+self.node.width*1.5)<=40) this.x=-self.node.width*1.5
-        if (Math.abs(this.x+self.node.width*0.5)<=40) this.x=-self.node.width*0.5
-        
+        if (Math.abs(this.x + self.node.width * 3.5) <= 40) this.x = -self.node.width * 3.5
+        if (Math.abs(this.x + self.node.width * 2.5) <= 40) this.x = -self.node.width * 2.5
+        if (Math.abs(this.x + self.node.width * 1.5) <= 40) this.x = -self.node.width * 1.5
+        if (Math.abs(this.x + self.node.width * 0.5) <= 40) this.x = -self.node.width * 0.5
       }
       event.stopPropagation()
     }, this.modeChoose)
 
-    
     this.modeChoose.on(cc.Node.EventType.TOUCH_END, function (event) {
       this.opacity = 255 // 不再拖动时复原
       const pos = this.x // 更新游戏地图
       // todo: 自动移动并对齐到当前地图
-      //var position=pos/this.node.width;
+      // var position=pos/this.node.width;
 
-      if (pos <= -self.node.width*3.5) {
+      if (pos <= -self.node.width * 3.5) {
         window.player_type = 'underwater'
-      } else if (pos <= -self.node.width*2.5) {
+      } else if (pos <= -self.node.width * 2.5) {
         window.player_type = 'jungle'
-      } else if (pos <=-self.node.width*1.5) {
+      } else if (pos <= -self.node.width * 1.5) {
         window.player_type = 'winter'
       } else {
         window.player_type = 'default'
@@ -204,7 +197,7 @@ cc.Class({
     this.storeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('store')
     }, this.storeButton)
-    this.x=this.x+this.node.width
+    this.x = this.x + this.node.width
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
       cc.director.loadScene('highScores')
       event.stopPropagation()
@@ -212,8 +205,8 @@ cc.Class({
   },
 
   start () {
-    //this.initUserInfoButton()
-    //this.readLocalWXStorage()
+    // this.initUserInfoButton()
+    // this.readLocalWXStorage()
   },
 
   initUserInfoButton () {
@@ -267,7 +260,7 @@ cc.Class({
           score: window.score
         })
       }
-    }*/
+    } */
     window.shouldUpdateScore = false
   }
 })
