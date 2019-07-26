@@ -43,6 +43,7 @@ cc.Class({
         rocketsound: null,
         sound:false,
         sensibility:10,
+        loaded:false,
         bubble: {
             default: null,
             type: cc.Node
@@ -93,6 +94,7 @@ cc.Class({
     setscale:function(value)
 {
 this.scalerate=value;
+
 return;
 },
     play_jumpsound: function () {
@@ -152,19 +154,19 @@ return;
 
     set_low_sensibility:function()
     {
-        console.log('sen_low')
+        //console.log('sen_low')
         this.sensibility=5;
     },
 
     set_medium_sensibility:function()
     {
-        console.log('sen_medium')
-        this.sensibility=15;
+        //console.log('sen_medium')
+        this.sensibility=20;
     },
     set_high_sensibility:function()
     {
-        console.log('sen_high')
-        this.sensibility=25;
+        //console.log('sen_high')
+        this.sensibility=40;
     },
   
 
@@ -201,6 +203,7 @@ return;
     },
 
     start() {
+        this.loaded=false;
         this.timer = 0;
         window.die=false;
 
@@ -218,7 +221,11 @@ return;
             this.node.scale=this.node.scale*this.scalerate;
             if (this.node.scale<=0.1)
             {
+                if (this.loaded===false)
+                {
                 cc.director.loadScene('gameover');
+                this.loaded=true;
+                }
                 window.score=this.game.getComponent('Game').score;
                 return;
             }
@@ -259,7 +266,11 @@ return;
 
             if ((Math.abs(this.speedy)<=10)&&(this.restart==0))
             {
+                if (this.loaded===false)
+                {
                 cc.director.loadScene('gameover');
+                this.loaded=true;
+                }
                 window.score=this.game.getComponent('Game').score;
                 return;
             }
@@ -279,9 +290,9 @@ return;
         if (this.accLeft) { this.speedx = -80; }
 
         if (this.accRight) { this.speedx = 80; }
-
-
 */
+
+
         var self = this;
 
 

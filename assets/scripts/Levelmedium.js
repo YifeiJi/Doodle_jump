@@ -17,9 +17,18 @@ cc.Class({
     },
 
     onLoad: function () {
+       
+      if (window.level===undefined)
+      {
+      this.toggle.isChecked=true;
+      window.level='medium'
+      }
+
       if (window.level==='medium')
       this.toggle.isChecked=true;
        this.toggle.node.on('toggle', this.callback, this);
+      
+
     },
 
     callback: function (event) {

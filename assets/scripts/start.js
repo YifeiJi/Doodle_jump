@@ -10,7 +10,7 @@
 
 cc.Class({
   extends: cc.Component,
-
+  prepared:false,
   properties: {
     background: {
       default: null,
@@ -39,7 +39,9 @@ cc.Class({
     modeChoose: {
       default: null,
       type: cc.Node
-    }
+    },
+    pos: 0,
+    loaded:false
 
   },
 
@@ -54,6 +56,7 @@ cc.Class({
         return console.error(err)
       }
     })
+
 
     cc.loader.downloader.loadSubpackage('player', function (err) {
       if (err) {
@@ -79,9 +82,12 @@ cc.Class({
 
   // LIFE-CYCLE CALLBACKS:
 
+
   readLocalWXStorage: function () {
     // 从本地读取剩余金钱
     const money = wx.getStorageSync('money')
+    
+    console.log('a'+money+'b')
     if (money === '') {
       window.money = 1000 // 如果未定义，则初始化
       console.log('本地微信 money 缓存数据为空。')
@@ -89,14 +95,96 @@ cc.Class({
     } else {
       window.money = parseInt(money, 10)
     }
+
+
+    // 从本地读取剩余rocketNumber
+    const rocketNumber = wx.getStorageSync('rocketNumber')
+    if (rocketNumber === '') {
+      window.rocketNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 rocketNumber 缓存数据为空。')
+      wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
+    } else {
+      window.rocketNumber = parseInt(rocketNumber, 10)
+    }
+
+    const hatNumber = wx.getStorageSync('hatNumber')
+    if (hatNumber === '') {
+      window.hatNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 hatNumber 缓存数据为空。')
+      wx.setStorageSync('hatNumber', `${window.hatNumber}`)
+    } else {
+      window.hatNumber = parseInt(hatNumber, 10)
+    }
+
+    const reviveNumber = wx.getStorageSync('reviveNumber')
+    if (reviveNumber === '') {
+      window.reviveNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 reviveNumber 缓存数据为空。')
+      wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
+    } else {
+      window.reviveNumber = parseInt(reviveNumber, 10)
+    }
+
+
+
   },
+  getURL: function (url) {
+    url = cc.url.raw(url);
+    if (cc.loader.md5Pipe) {
+      url = cc.loader.md5Pipe.transformURL(url);
+    }
+    try {
+      let fs = wx.getFileSystemManager();
+      let localPath = wx.env.USER_DATA_PATH + '/';
+      url = localPath + url;
+      fs.accessSync(url);
+    }
+    catch (error) {
+      url = window.wxDownloader.REMOTE_SERVER_ROOT + "/" + url;
+    }
+    return url;
+  },
+
+
   onLoad: function () {
-    
-    if (window.loaded!==true)
-{
-       this.load_subpackage();
-       window.loaded=true;
-}
+    this.load_subpackage();
+    this.loaded=false;
+    //this.initUserInfoButton()
+    /*
+    if (window.loaded !== true) {
+      this.load_subpackage();
+      window.loaded = true;
+    }*/
+
+  
+    /*
+    wx.showShareMenu();
+    var sharePicUrl
+
+    cc.loader.loadRes('share', (err, data) => {
+      if (err) {
+        console.log('获取图片地址错误');
+      } else {
+        //sharePicUrl = data.url;
+        sharePicUrl = cc.loader.md5Pipe.transformURL(data.url);
+        console.log(sharePicUrl);
+      }
+    });
+
+
+    if (typeof (wx) !== "undefined") {
+      wx.onShareAppMessage(() => {
+        return {
+          title: "Let's play Doodle jump!",
+          imageUrl: sharePicUrl
+          // this.getURL('resources/player/default/origin_left')
+        }
+      })
+
+    }
+
+*/
+
     // todo: 美化按钮点击后效果
     window.player_type = 'default' // 游戏地图初始化
     // 设置适配模式
@@ -104,44 +192,40 @@ cc.Class({
     this.background.setContentSize(this.node.width, this.node.height)
     this.modeChoose.setContentSize(this.node.width * 4, 120)
     this.modeChoose.x = -this.node.width * 0.5
-    cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
-    // window.level = 'easy'
-    // window.sensibility = 'medium'
-    this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      cc.director.loadScene('game')
-      event.stopPropagation()
-    }, this.playButton)
+    //cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
 
-    this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      cc.director.loadScene('option')
-      event.stopPropagation()
-    }, this.scoreButton)
+   
     // cc.game.addPersistRootNode(this.node)
     var self = this
+    this.pos = -this.node.width * 0.5
+    this.delta = 0
     this.modeChoose.on(cc.Node.EventType.TOUCH_MOVE, function (event) {
       this.opacity = 200 // 反馈效果：拖动物体时变透明
       const delta = event.getDelta()
-      if ((this.x + delta.x >= -self.node.width * 4.5) && (this.x + delta.x < -self.node.width * 0.5)) {
-        this.x += delta.x
-        if (Math.abs(this.x + self.node.width * 3.5) <= 40) this.x = -self.node.width * 3.5
-        if (Math.abs(this.x + self.node.width * 2.5) <= 40) this.x = -self.node.width * 2.5
-        if (Math.abs(this.x + self.node.width * 1.5) <= 40) this.x = -self.node.width * 1.5
-        if (Math.abs(this.x + self.node.width * 0.5) <= 40) this.x = -self.node.width * 0.5
-      }
+      this.x += delta.x
+
+
       event.stopPropagation()
     }, this.modeChoose)
 
+
     this.modeChoose.on(cc.Node.EventType.TOUCH_END, function (event) {
       this.opacity = 255 // 不再拖动时复原
-      const pos = this.x // 更新游戏地图
-      // todo: 自动移动并对齐到当前地图
-      // var position=pos/this.node.width;
 
-      if (pos <= -self.node.width * 3.5) {
+
+      if (this.x > self.pos) self.delta = 1
+      if (this.x < self.pos) self.delta = -1
+      this.x = self.pos + self.delta * self.node.width
+      if (this.x > -self.node.width * 0.5) this.x = -self.node.width * 3.5
+      if (this.x < -self.node.width * 3.5) this.x = -self.node.width * 0.5
+      self.pos = this.x
+      self.delta = 0
+      const pos = this.x // 更新游戏地图
+      if (pos === -self.node.width * 3.5) {
         window.player_type = 'underwater'
-      } else if (pos <= -self.node.width * 2.5) {
+      } else if (pos === -self.node.width * 2.5) {
         window.player_type = 'jungle'
-      } else if (pos <= -self.node.width * 1.5) {
+      } else if (pos === -self.node.width * 1.5) {
         window.player_type = 'winter'
       } else {
         window.player_type = 'default'
@@ -150,28 +234,79 @@ cc.Class({
       event.stopPropagation()
     }, this.modeChoose)
 
-    this.storeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      cc.director.loadScene('store')
-    }, this.storeButton)
-    this.x = this.x + this.node.width
-    this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      cc.director.loadScene('highScores')
+   
+    //this.x = this.x + this.node.width
+   
+  },
+
+  start() {
+    // cc.director.preloadScene('game', (c,t,i)=>{}, (e,a)=>{})
+    // cc.director.preloadScene('option', (c,t,i)=>{}, (e,a)=>{})
+    // cc.director.preloadScene('highScores', (c,t,i)=>{}, (e,a)=>{})
+    // cc.director.preloadScene('store', (c,t,i)=>{}, (e,a)=>{})
+    //cc.director.preloadScene('game', ()=>{})
+    //cc.director.preloadScene('option', ()=>{})
+    //cc.director.preloadScene('highScores', ()=>{})
+    //cc.director.preloadScene('store', ()=>{})
+    /*cc.director.preloadScene('game', function () {
+      cc.log('Next scene preloaded');
+  });
+*/
+var self=this
+/*
+cc.director.preloadScene('game', function() {
+  self.loaded = true;
+})*/
+    this.readLocalWXStorage()
+   
+    this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+    
+      //if (!self.prepared) return;
+     if (!self.loaded)
+     return;
+      
+      cc.director.loadScene('game')
       event.stopPropagation()
-    }, this.scoreButton)
+   
+    }, this)
+
+    this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      //if (!self.prepared) return;
+      cc.director.loadScene('option')
+
+      event.stopPropagation()
+     
+    }, this)
+
+    this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      //if (!self.prepared) return;
+      cc.director.loadScene('highScores')
+     
+      event.stopPropagation()
+      
+    }, this)
+
+    this.storeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      //if (!self.prepared) return;
+      console.log('store')
+      console.log(self.storeButton)
+      console.log(cc.director._loadingScene)
+      cc.director.loadScene('store')
+      
+      event.stopPropagation()
+      
+    }, this)
+
   },
 
-  start () {
-    // this.initUserInfoButton()
-    // this.readLocalWXStorage()
-  },
-
-  initUserInfoButton () {
+  initUserInfoButton() {
     if (typeof wx === 'undefined') {
       return
     }
-
+    var self=this
     wx.getSetting({
-      success (res) {
+      success(res) {
+        console.log(res.authSetting['scope.userInfo'])
         if (!res.authSetting['scope.userInfo']) { // 如果用户尚未授权，则请求授权
           const systemInfo = wx.getSystemInfoSync()
           const width = systemInfo.windowWidth
@@ -198,25 +333,14 @@ cc.Class({
             if (!userInfo) {
               return
             }
+            self.prepared=true
             button.hide()
             button.destroy()
           })
-        }
+        } else {self.prepared=true}
       }
     })
   },
 
-  update (dt) {
-    /*
-    if (window.shouldUpdateScore) {
-      if (window.score > this.maxLocalScore) {
-        this.maxLocalScore = window.score
-        wx.postMessage({
-          command: 'upload', // 上传分数
-          score: window.score
-        })
-      }
-    } */
-    window.shouldUpdateScore = false
-  }
+ 
 })

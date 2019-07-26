@@ -61,6 +61,7 @@ cc.Class({
       keyList: ['maxScore'],
       success: res => {
         if (res.KVDataList.length > 0) { // 如果云端已有分数，先比较（否则直接上传）
+          console.log(`云端存档分数为 ${res.KVDataList[0].value}`)
           cloudScore = parseInt(res.KVDataList[0].value, 10)
           if (score <= cloudScore) {
             console.log('当前用户分数不大于云端分数，不必上传')
@@ -70,7 +71,7 @@ cc.Class({
 
         wx.setUserCloudStorage({
           KVDataList: [
-            { key: 'maxScore', value: String(score) }
+            { key: 'maxScore', value: score.toString() }
           ],
           success: res => {
             console.log('上传用户最大分数成功！', res)
@@ -98,28 +99,32 @@ cc.Class({
     // 接口废弃：为了将当前用户加入排行榜，需要手动处理
     // this.initUserInfo()
     // this.initFriendInfo()
-
+    console.log('网不好')
     wx.getUserInfo({
       openIdList: ['selfOpenId'],
       lang: 'zh_CN',
       success: (res) => {
         this.loadingLabel.active = false
-        const myData = res.data[0]
+        // const myData = res.data[0]
         // this.createUserBlock('user', res.data[0])
         console.log('当前用户信息获取成功', res.data[0])
         wx.getFriendCloudStorage({
+          keyList: ['maxScore'],
           success: (res) => {
             const friendData = res.data
             if (friendData.length > 0) {
               console.log(`玩过这个游戏的好友还有：${friendData[0].nickname}等${friendData.length}人`)
             }
 
+            /*
             // 传入自己的数据，一同加入排名
+             * wx.getFriendCloudStorage已经包含用户自身分数，不需要再处理
             let myKVDataList = []
-            wx.getUserCloudStorage({ // OpenDataContext-wx.getUserInfo不包含用户分数，需要单独获取
+            wx.getUserCloudStorage({
               keyList: ['maxScore'],
               success: res => {
                 myKVDataList = res.KVDataList
+                console.log('从getUserCloudStorage接口获取的用户信息如下', res.KVDataList)
               }
             })
             friendData.push({
@@ -127,8 +132,9 @@ cc.Class({
               nickname: myData.nickName,
               KVDataList: myKVDataList
             })
+             */
 
-            // 加入一些自定义的样例数据
+            /* 一些自定义的测试用样例数据
             friendData.push({
               nickname: '王二麻子',
               KVDataList: [
@@ -147,9 +153,11 @@ cc.Class({
                 { key: 'maxScore', value: '666' }
               ]
             })
+             */
 
             // 把用户所有好友的分数降序重新排列后依次绘制
             this.scoreSort(friendData)
+            console.log(friendData)
             for (let i = 0; i < friendData.length; i++) {
               this.createUserBlock(i, friendData[i]) // 这里的i+1就是排名
             }
@@ -158,61 +166,6 @@ cc.Class({
             console.error(res)
           }
         })
-      },
-      fail: (res) => {
-        console.error(res)
-      }
-    })
-  },
-
-  initUserInfo () {
-    wx.getUserInfo({
-      openIdList: ['selfOpenId'],
-      lang: 'zh_CN',
-      success: (res) => {
-        this.loadingLabel.active = false
-        this.createUserBlock('user', res.data[0])
-        console.log('当前用户信息获取成功', res.data[0])
-      },
-      fail: (res) => {
-        console.error(res)
-      }
-    })
-  },
-
-  initFriendInfo () {
-    wx.getFriendCloudStorage({
-      success: (res) => {
-        const friendData = res.data
-        if (friendData.length > 0) {
-          console.log(`玩过这个游戏的好友还有：${friendData[0].nickname}等${friendData.length}人`)
-        }
-
-        // 加入一些自定义的样例数据
-        friendData.push({
-          nickname: '王二麻子',
-          KVDataList: [
-            { key: 'maxScore', value: '8' }
-          ]
-        })
-        friendData.push({
-          nickname: '李四',
-          KVDataList: [
-            { key: 'maxScore', value: '123' }
-          ]
-        })
-        friendData.push({
-          nickname: '张三',
-          KVDataList: [
-            { key: 'maxScore', value: '666' }
-          ]
-        })
-
-        // 把用户所有好友的分数降序重新排列后依次绘制
-        this.scoreSort(friendData)
-        for (let i = 0; i < friendData.length; i++) {
-          this.createUserBlock(i, friendData[i]) // 这里的i+1就是排名
-        }
       },
       fail: (res) => {
         console.error(res)
@@ -302,7 +255,11 @@ cc.Class({
   onDestroy () {
     this.scrollViewContent.removeAllChildren()
     wx.triggerGC()
-  }
+  },
+
+ 
+
+ 
 
   // update (dt) {},
 })

@@ -51,7 +51,7 @@ cc.Class({
      * 开局可购买如下道具
      * 竹蜻蜓、喷气火箭、复活道具
      */
-    this.readLocalWXStorage()
+    //this.readLocalWXStorage()
     this.init() // 根据当前道具情况更新页面
 
     this.moneyText.string = `money: ${window.money}`
@@ -117,6 +117,25 @@ cc.Class({
       wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
     } else {
       window.rocketNumber = parseInt(rocketNumber, 10)
+    }
+
+
+    const hatNumber = wx.getStorageSync('hatNumber')
+    if (hatNumber === '') {
+      window.hatNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 hatNumber 缓存数据为空。')
+      wx.setStorageSync('hatNumber', `${window.rocketNumber}`)
+    } else {
+      window.hatNumber = parseInt(hatNumber, 10)
+    }
+
+    const reviveNumber = wx.getStorageSync('reviveNumber')
+    if (reviveNumber === '') {
+      window.reviveNumber = 0 // 如果未定义，则初始化
+      console.log('本地微信 reviveNumber 缓存数据为空。')
+      wx.setStorageSync('reviveNumber', `${window.rocketNumber}`)
+    } else {
+      window.reviveNumber = parseInt(reviveNumber, 10)
     }
 
 

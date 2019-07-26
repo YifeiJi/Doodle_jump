@@ -115,7 +115,8 @@ cc.Class({
 
     onLoad: function () {
         // 初始化计时器
-      
+      //window.player_type='default';
+      //this.load_subpackage();
         this.timer = 0;
         this.maxX = this.node.width / 2;
         this.maxY = this.node.height / 2;
@@ -174,7 +175,7 @@ cc.Class({
 
         var player = this.player;
         if(window.level===undefined)
-        window.level='easy'; 
+        window.level='medium'; 
        console.log(window.level)
         if (window.level === 'easy') {
             this.interval = this.interval_easy;
@@ -224,6 +225,31 @@ cc.Class({
 
     },
   
+    load_subpackage: function () {
+        cc.loader.downloader.loadSubpackage('block', function (err) {
+          if (err) {
+            return console.error(err)
+          }
+        })
+        cc.loader.downloader.loadSubpackage('game', function (err) {
+          if (err) {
+            return console.error(err)
+          }
+        })
+    
+    
+        cc.loader.downloader.loadSubpackage('player', function (err) {
+          if (err) {
+            return console.error(err)
+          }
+        })
+        cc.loader.downloader.loadSubpackage('monster', function (err) {
+          if (err) {
+            return console.error(err)
+          }
+        })
+      },
+
     start() {
 
 
@@ -350,7 +376,7 @@ cc.Class({
     produceBlock: function (x, y) {
         var newBlock = cc.instantiate(this.basicblock);
         if (window.player_type === 'winter') newBlock = cc.instantiate(this.winterblock);
-        else if (player_type === 'underwater') newBlock = cc.instantiate(this.underwaterblock);
+        else if (window.player_type === 'underwater') newBlock = cc.instantiate(this.underwaterblock);
         //newBlock.getComponent('Block').type='basic';
         this.node.addChild(newBlock, 0);
 
@@ -368,7 +394,7 @@ cc.Class({
         var randy;
         //this.param_leftright = 0;
         var player_type = window.player_type;
-
+ 
 
 
 

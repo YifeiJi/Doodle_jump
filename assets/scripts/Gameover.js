@@ -52,6 +52,7 @@ cc.Class({
   // LIFE-CYCLE CALLBACKS:
 
   onLoad () {
+    console.log('gameover')
     this.maxX = this.node.width / 2
     this.maxY = this.node.height / 2
     this.restartButton.on(cc.Node.EventType.TOUCH_END, function (event) {
@@ -64,28 +65,29 @@ cc.Class({
 
   start () {
     this.bg.setContentSize(2 * this.maxX, 2 * this.maxY)
+    window.score=parseInt(window.score)
     var score = window.score
     window.reviveNumber = 0
     window.hatNumber = 0
     window.rocketNumber = 0
+    //console.log('money')
+    //console.log(window.money)
+    
     wx.setStorageSync('reviveNumber', `${0}`)
 
-    wx.setStorageSync('rocketNumber', `${window.rocketNumber}`)
-    wx.setStorageSync('hatNumber', `${window.hatNumber}`)
+    wx.setStorageSync('rocketNumber', `${0}`)
+    wx.setStorageSync('hatNumber', `${0}`)
     wx.setStorageSync('money', `${window.money + 30}`)
+    window.start_with_rocket=false;
+    window.start_with_hat=false;
 
-    this.maxLocalScore = wx.getStorageSync('maxlocalscore')
-    if (this.maxLocalScore === '') { this.maxLocalScore = 0 }
 
-    if (window.score > this.maxLocalScore) {
-      this.maxLocalScore = window.score
-      wx.setStorageSync('maxlocalscore', `${window.score}`)
-      wx.postMessage({
-        command: 'upload', // 上传分数
-        score: window.score
-      })
-    }
-
+    
+    wx.postMessage({
+      command: 'upload', // 上传分数
+      score: window.score
+    })
+    
     this.scoreDisplay.string = '<color=#222222>Your score:  ' + parseInt(score) + '</n>'
   }
 

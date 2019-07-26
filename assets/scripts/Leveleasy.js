@@ -17,11 +17,11 @@ cc.Class({
     },
 
     onLoad: function () {
+       console.log(window.level)
        if (window.level==='easy')
        this.toggle.isChecked=true;
-       if (window.level==='')
-       this.toggle.isChecked=true;
        this.toggle.node.on('toggle', this.callback, this);
+     
     },
 
     callback: function (event) {
