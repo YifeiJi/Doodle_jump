@@ -9,24 +9,21 @@
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
+  properties: {
+    toggle: cc.Toggle
+  },
 
-    properties: {
-       toggle: cc.Toggle
-    },
+  onLoad: function () {
+    this.toggle.node.on('toggle', this.callback, this)
+  },
 
-    onLoad: function () {
-       this.toggle.node.on('toggle', this.callback, this);
-    },
+  callback: function (event) {
+    var toggle = event
 
-    callback: function (event) {
-       var toggle = event;
-      
-       if(toggle.isChecked){
-       
-        window.sensibility='high';
-       }
-       
+    if (toggle.isChecked) {
+      window.sensibility = 'high'
     }
-});
+  }
+})

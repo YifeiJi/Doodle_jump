@@ -10,8 +10,24 @@
 
 cc.Class({
   extends: cc.Component,
-  prepared:false,
   properties: {
+    label: {
+      default: null,
+      type: cc.Node
+    },
+    mask: {
+      default: null,
+      type: cc.Node
+    },
+    player: {
+      default: null,
+      type: cc.Node
+    },
+    block: {
+      default: null,
+      type: cc.Node
+    },
+
     background: {
       default: null,
       type: cc.Node
@@ -41,29 +57,37 @@ cc.Class({
       type: cc.Node
     },
     pos: 0,
-    loaded:false
+    speed: 0,
+    loaded: false,
+    acc: -600,
+    Radius: 5
 
   },
 
   load_subpackage: function () {
+    var self = this
+    this.num = 0
     cc.loader.downloader.loadSubpackage('block', function (err) {
+      self.num = self.num + 1
       if (err) {
         return console.error(err)
       }
     })
     cc.loader.downloader.loadSubpackage('game', function (err) {
+      self.num = self.num + 1
       if (err) {
         return console.error(err)
       }
     })
 
-
     cc.loader.downloader.loadSubpackage('player', function (err) {
+      self.num = self.num + 1
       if (err) {
         return console.error(err)
       }
     })
     cc.loader.downloader.loadSubpackage('monster', function (err) {
+      self.num = self.num + 1
       if (err) {
         return console.error(err)
       }
@@ -74,6 +98,7 @@ cc.Class({
       }
     })
     cc.loader.downloader.loadSubpackage('highScores', function (err) {
+      self.num = self.num + 1
       if (err) {
         return console.error(err)
       }
@@ -82,20 +107,18 @@ cc.Class({
 
   // LIFE-CYCLE CALLBACKS:
 
-
   readLocalWXStorage: function () {
     // 从本地读取剩余金钱
     const money = wx.getStorageSync('money')
-    
-    console.log('a'+money+'b')
+
+    console.log('a' + money + 'b')
     if (money === '') {
-      window.money = 1000 // 如果未定义，则初始化
+      window.money = 3000 // 如果未定义，则初始化
       console.log('本地微信 money 缓存数据为空。')
       wx.setStorageSync('money', `${window.money}`)
     } else {
       window.money = parseInt(money, 10)
     }
-
 
     // 从本地读取剩余rocketNumber
     const rocketNumber = wx.getStorageSync('rocketNumber')
@@ -124,55 +147,48 @@ cc.Class({
     } else {
       window.reviveNumber = parseInt(reviveNumber, 10)
     }
-
-
-
   },
   getURL: function (url) {
-    url = cc.url.raw(url);
+    url = cc.url.raw(url)
     if (cc.loader.md5Pipe) {
-      url = cc.loader.md5Pipe.transformURL(url);
+      url = cc.loader.md5Pipe.transformURL(url)
     }
     try {
-      let fs = wx.getFileSystemManager();
-      let localPath = wx.env.USER_DATA_PATH + '/';
-      url = localPath + url;
-      fs.accessSync(url);
+      const fs = wx.getFileSystemManager()
+      const localPath = wx.env.USER_DATA_PATH + '/'
+      url = localPath + url
+      fs.accessSync(url)
+    } catch (error) {
+      url = window.wxDownloader.REMOTE_SERVER_ROOT + '/' + url
     }
-    catch (error) {
-      url = window.wxDownloader.REMOTE_SERVER_ROOT + "/" + url;
-    }
-    return url;
+    return url
   },
 
-
   onLoad: function () {
-    this.load_subpackage();
-    this.loaded=false;
-    //this.initUserInfoButton()
+    this.load_subpackage()
+    this.loaded = false
+    this.acc = -600
+    // this.initUserInfoButton()
     /*
     if (window.loaded !== true) {
       this.load_subpackage();
       window.loaded = true;
-    }*/
+    } */
 
-  
-    /*
-    wx.showShareMenu();
+    wx.showShareMenu()
     var sharePicUrl
 
     cc.loader.loadRes('share', (err, data) => {
       if (err) {
-        console.log('获取图片地址错误');
+        console.log('获取图片地址错误')
       } else {
-        //sharePicUrl = data.url;
-        sharePicUrl = cc.loader.md5Pipe.transformURL(data.url);
-        console.log(sharePicUrl);
+        // sharePicUrl = data.url;
+        sharePicUrl = cc.loader.md5Pipe.transformURL(data.url)
+        console.log(sharePicUrl)
       }
-    });
+    })
 
-
-    if (typeof (wx) !== "undefined") {
+    if (typeof (wx) !== 'undefined') {
       wx.onShareAppMessage(() => {
         return {
           title: "Let's play Doodle jump!",
@@ -180,21 +196,25 @@ cc.Class({
           // this.getURL('resources/player/default/origin_left')
         }
       })
-
     }
-
-*/
 
     // todo: 美化按钮点击后效果
     window.player_type = 'default' // 游戏地图初始化
     // 设置适配模式
 
     this.background.setContentSize(this.node.width, this.node.height)
+    this.mask.setContentSize(this.node.width, this.node.height)
+    this.mask.zIndex = 100
+    this.player.zIndex = 101
+    this.block.zIndex = 101
+    this.label.zIndex = 101
+    this.player.y = this.node.height * 0.1
+    this.label.y = -this.node.height * 0.3
+    this.block.y = -this.node.height * 0.1
     this.modeChoose.setContentSize(this.node.width * 4, 120)
     this.modeChoose.x = -this.node.width * 0.5
-    //cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
+    // cc.view.setOrientation(cc.macro.ORIENTATION_PORTRAIT)
 
-   
     // cc.game.addPersistRootNode(this.node)
     var self = this
     this.pos = -this.node.width * 0.5
@@ -204,14 +224,11 @@ cc.Class({
       const delta = event.getDelta()
       this.x += delta.x
 
-
       event.stopPropagation()
     }, this.modeChoose)
 
-
     this.modeChoose.on(cc.Node.EventType.TOUCH_END, function (event) {
       this.opacity = 255 // 不再拖动时复原
-
 
       if (this.x > self.pos) self.delta = 1
       if (this.x < self.pos) self.delta = -1
@@ -234,78 +251,53 @@ cc.Class({
       event.stopPropagation()
     }, this.modeChoose)
 
-   
-    //this.x = this.x + this.node.width
-   
+    // this.x = this.x + this.node.width
   },
 
-  start() {
-    // cc.director.preloadScene('game', (c,t,i)=>{}, (e,a)=>{})
-    // cc.director.preloadScene('option', (c,t,i)=>{}, (e,a)=>{})
-    // cc.director.preloadScene('highScores', (c,t,i)=>{}, (e,a)=>{})
-    // cc.director.preloadScene('store', (c,t,i)=>{}, (e,a)=>{})
-    //cc.director.preloadScene('game', ()=>{})
-    //cc.director.preloadScene('option', ()=>{})
-    //cc.director.preloadScene('highScores', ()=>{})
-    //cc.director.preloadScene('store', ()=>{})
-    /*cc.director.preloadScene('game', function () {
-      cc.log('Next scene preloaded');
-  });
-*/
-var self=this
-/*
-cc.director.preloadScene('game', function() {
-  self.loaded = true;
-})*/
+  start () {
+    var self = this
     this.readLocalWXStorage()
-   
+
     this.playButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-    
-      //if (!self.prepared) return;
-     if (!self.loaded)
-     return;
-      
+      // if (!self.prepared) return;
+      if (self.num < 5) { return }
+
       cc.director.loadScene('game')
       event.stopPropagation()
-   
     }, this)
 
     this.optionButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      //if (!self.prepared) return;
+      // if (!self.prepared) return;
+      if (self.num < 5) { return }
       cc.director.loadScene('option')
 
       event.stopPropagation()
-     
     }, this)
 
     this.scoreButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      //if (!self.prepared) return;
+      // if (!self.prepared) return;
+      if (self.num < 5) { return }
       cc.director.loadScene('highScores')
-     
+
       event.stopPropagation()
-      
     }, this)
 
     this.storeButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-      //if (!self.prepared) return;
-      console.log('store')
-      console.log(self.storeButton)
       console.log(cc.director._loadingScene)
+      if (self.num < 5) { return }
       cc.director.loadScene('store')
-      
-      event.stopPropagation()
-      
-    }, this)
 
+      event.stopPropagation()
+    }, this)
   },
 
-  initUserInfoButton() {
+  initUserInfoButton () {
     if (typeof wx === 'undefined') {
       return
     }
-    var self=this
+    var self = this
     wx.getSetting({
-      success(res) {
+      success (res) {
         console.log(res.authSetting['scope.userInfo'])
         if (!res.authSetting['scope.userInfo']) { // 如果用户尚未授权，则请求授权
           const systemInfo = wx.getSystemInfoSync()
@@ -333,14 +325,27 @@ cc.director.preloadScene('game', function() {
             if (!userInfo) {
               return
             }
-            self.prepared=true
+            self.prepared = true
             button.hide()
             button.destroy()
           })
-        } else {self.prepared=true}
+        } else { self.prepared = true }
       }
     })
   },
 
- 
+  update: function (dt) {
+    this.player.y = this.player.y + this.speed * dt
+    this.speed = this.speed + this.acc * dt
+    if (((this.player.y - this.player.height / 2) - (this.block.y + this.block.height / 2)) <= this.Radius) {
+      if (this.speed < 0) { this.speed = -this.speed }
+    }
+
+    if (this.num == 5) {
+      this.mask.zIndex = -1
+      this.block.zIndex = -1
+      this.player.zIndex = -1
+      this.label.zIndex = -1
+    }
+  }
 })

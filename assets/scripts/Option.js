@@ -9,41 +9,37 @@
 //  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
-    properties: {
-        bg: {
-            default: null,
-            type: cc.Node
-        },
-        maxX:0,
-        maxY:0,
-        
-          menuButton: {
-            default: null,
-            type: cc.Node
-          },
-        
-
+  properties: {
+    bg: {
+      default: null,
+      type: cc.Node
     },
+    maxX: 0,
+    maxY: 0,
 
-    // LIFE-CYCLE CALLBACKS:
+    menuButton: {
+      default: null,
+      type: cc.Node
+    }
 
-    onLoad () {
-        this.maxX = this.node.width / 2;
-        this.maxY = this.node.height / 2;
-        
-        this.menuButton.on(cc.Node.EventType.TOUCH_END, function (event) {
-            cc.director.loadScene('start')
-          })
+  },
 
+  // LIFE-CYCLE CALLBACKS:
 
-    },
+  onLoad () {
+    this.maxX = this.node.width / 2
+    this.maxY = this.node.height / 2
 
-    start () {
-        this.bg.setContentSize(2 * this.maxX, 2 * this.maxY);
-        
-    },
+    this.menuButton.on(cc.Node.EventType.TOUCH_END, function (event) {
+      cc.director.loadScene('start')
+    })
+  },
 
-    // update (dt) {},
-});
+  start () {
+    this.bg.setContentSize(2 * this.maxX, 2 * this.maxY)
+  }
+
+  // update (dt) {},
+})

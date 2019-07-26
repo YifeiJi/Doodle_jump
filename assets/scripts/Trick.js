@@ -46,7 +46,6 @@ cc.Class({
 
       var path = './trick/f-' + String(num)
 
-
       var self = this
       // console.log(self.node.getComponent(cc.Sprite))
       cc.loader.loadRes(path, cc.SpriteFrame, function (err, spriteFrame) {

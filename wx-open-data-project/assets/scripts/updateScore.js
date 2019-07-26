@@ -255,11 +255,7 @@ cc.Class({
   onDestroy () {
     this.scrollViewContent.removeAllChildren()
     wx.triggerGC()
-  },
-
- 
-
- 
+  }
 
   // update (dt) {},
 })

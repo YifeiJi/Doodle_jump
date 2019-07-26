@@ -65,29 +65,27 @@ cc.Class({
 
   start () {
     this.bg.setContentSize(2 * this.maxX, 2 * this.maxY)
-    window.score=parseInt(window.score)
+    window.score = parseInt(window.score)
     var score = window.score
-    window.reviveNumber = 0
+    // window.reviveNumber = 0
     window.hatNumber = 0
     window.rocketNumber = 0
-    //console.log('money')
-    //console.log(window.money)
-    
-    wx.setStorageSync('reviveNumber', `${0}`)
+    // console.log('money')
+    // console.log(window.money)
+
+    wx.setStorageSync('reviveNumber', `${window.reviveNumber}`)
 
     wx.setStorageSync('rocketNumber', `${0}`)
     wx.setStorageSync('hatNumber', `${0}`)
-    wx.setStorageSync('money', `${window.money + 30}`)
-    window.start_with_rocket=false;
-    window.start_with_hat=false;
+    wx.setStorageSync('money', `${window.money + 50}`)
+    window.start_with_rocket = false
+    window.start_with_hat = false
 
-
-    
     wx.postMessage({
       command: 'upload', // 上传分数
       score: window.score
     })
-    
+
     this.scoreDisplay.string = '<color=#222222>Your score:  ' + parseInt(score) + '</n>'
   }
 

@@ -36,28 +36,23 @@ cc.Class({
 
   start () {
 
-
-
   },
 
   show () {
     var self = this
-        if ((this.type === 'default') || (this.type === 'winter')) {
+    if ((this.type === 'default') || (this.type === 'winter')) {
       cc.loader.loadRes('./block/bed', cc.SpriteFrame, function (err, spriteFrame) {
         self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-
-            })
-        } else if (this.type === 'jungle') {
+      })
+    } else if (this.type === 'jungle') {
       cc.loader.loadRes('./block/junglebed', cc.SpriteFrame, function (err, spriteFrame) {
         self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-
-            })
-        } else if (this.type === 'underwater') {
+      })
+    } else if (this.type === 'underwater') {
       cc.loader.loadRes('./block/underwaterbed', cc.SpriteFrame, function (err, spriteFrame) {
         self.node.getComponent(cc.Sprite).spriteFrame = spriteFrame
-
-            })
-        }
+      })
+    }
   }
   // update (dt) {},
 })
