@@ -94,13 +94,57 @@ cc.Class({
     }
 
   },
-  onLoad: function () {
+  getURL:function(url){
+    url = cc.url.raw(url);
+    if(cc.loader.md5Pipe){
+    url = cc.loader.md5Pipe.transformURL(url);
+    }
+    try{
+    let fs = wx.getFileSystemManager();
+    let localPath = wx.env.USER_DATA_PATH +'/';
+    url = localPath + url;
+    fs.accessSync(url);
+    }
+    catch (error) {
+    url = window.wxDownloader.REMOTE_SERVER_ROOT + "/" + url;
+    }
+    return url;
+    },
     
+ 
+  onLoad: function () {
     if (window.loaded!==true)
 {
        this.load_subpackage();
        window.loaded=true;
 }
+    wx.showShareMenu();
+    var sharePicUrl 
+    
+    cc.loader.loadRes('share', (err, data) => {
+      if (err) {
+      console.log('获取图片地址错误');
+      } else {
+      //sharePicUrl = data.url;
+      sharePicUrl = cc.loader.md5Pipe.transformURL(data.url);
+      console.log(sharePicUrl);
+      }
+      });
+
+
+    if (typeof (wx) !== "undefined") {
+      wx.onShareAppMessage(() => {
+        return {
+          title: "Let's play Doodle jump!",
+          imageUrl:  sharePicUrl
+                    // this.getURL('resources/player/default/origin_left')
+        }
+      })
+
+}
+
+    
+    
     // todo: 美化按钮点击后效果
     window.player_type = 'default' // 游戏地图初始化
     // 设置适配模式
